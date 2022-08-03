@@ -1,2 +1,12 @@
+url: https://wsummerhill.github.io
 theme: jekyll-theme-midnight
 title: "Will Summerhill GitHub"
+description: "Pentesting & Red Teaming Things"
+baseurl: "" # the subpath of your site, e.g. /blog/
+
+twitter_username: bsummerz
+github_username: wsummerhill
+
+markdown: kramdown
+highlighter: rouge
+
