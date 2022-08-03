@@ -24,8 +24,8 @@ description: >- # this means to ignore newlines until "baseurl:"
   Red Teaming & Pentesting Site
 
 baseurl: "" # the subpath of your site, e.g. /blog
-domain: wsummerhill.github.io
-url: "https://wsummerhill.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+domain: wsummerhill.github.io # enforce HTTPS
+url: "https://wsummerhill.github.io" # the base hostname & protocol for your site
 
 twitter_username: bsummerz
 github_username:  wsummerhill
@@ -37,6 +37,8 @@ remote_theme: "mmistakes/jekyll-theme-basically-basic@1.4.5"
 plugins:
   - jekyll-feed
   - jekyll-remote-theme
+
+lang: en-US
 
 # Exclude from processing.
 # The following items will not be processed, by default.
