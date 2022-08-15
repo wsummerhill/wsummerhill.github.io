@@ -10,3 +10,4 @@ My interests include:
 - Malware development - C#, C++
 - Active Directory exploitation
 - Research new tooling and techniques
+- Teaching and helping others
