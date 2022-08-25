@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-I work as a red team consultant at Mandiant (Google Cloud) specializing in red teaming and penetration testing engagements.<br>
+I work as a red team consultant at Mandiant specializing in penetration testing and red teaming engagements. I'm deeply interested in malware development and all things payload/malware execution. <br>
 
 My interests include:
 - Malware development - C#, C++
