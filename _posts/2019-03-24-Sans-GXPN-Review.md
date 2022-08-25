@@ -50,8 +50,8 @@ This was easily the most difficult day, and I felt wiped by the end of it since 
 ### Day 6: CTF
 CTF day - yay! The CTF was quite fun since it utilized tools and techniques learned throughout the previous 5 days. There were some good buffer overflows which got exceedingly difficult (I couldn't come close to doing them in time) and a good variety of both Windows and Linux attacks, crypto and cool trivia. My team ended up winning (thanks to them) so we got the coveted  660 challenge coin...
 
-![image](https://user-images.githubusercontent.com/35749735/186721665-efc957e8-d8bc-4587-b2fb-ce99607bb0cd.png) ![image](https://user-images.githubusercontent.com/35749735/186721710-cf23c418-38f2-48a2-a958-f52464e9afb8.png)
-
+<img src="https://user-images.githubusercontent.com/35749735/186721665-efc957e8-d8bc-4587-b2fb-ce99607bb0cd.png" alt="image" width="400"/>
+<img src="https://user-images.githubusercontent.com/35749735/186721710-cf23c418-38f2-48a2-a958-f52464e9afb8.png" alt="image" width="400"/>
 
 -----
 
