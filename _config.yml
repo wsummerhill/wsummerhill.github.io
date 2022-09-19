@@ -31,6 +31,14 @@ logo: logo.png
 twitter_username: bsummerz
 github_username:  wsummerhill
 
+# Select which social network share links to show in posts
+share-links-active:
+  twitter: true
+  github: true
+
+# Show website link in HTML footer
+url-pretty: "wsummerhill.github.io"
+
 # Build settings
 #theme: minima #default theme
 markdown: kramdown
@@ -47,6 +55,10 @@ search_full_content: false
 # Pagination - https://jekyllrb.com/docs/pagination/
 paginate: 5
 paginate_path: /page:num/
+
+# Back to top link
+back_to_top: true
+
 
 # Exclude from processing.
 # The following items will not be processed, by default.
