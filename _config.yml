@@ -49,6 +49,16 @@ search_full_content: false
 paginate: 5
 paginate_path: /page:num/
 
+# Site Footer
+footer:
+  links:
+    - label: "Twitter"
+      icon: "fa-twitter-square"
+      url: https://twitter.com/bsummerz
+    - label: "GitHub"
+      icon: "fa-github"
+      url: https://github.com/wsummerhill
+
 
 # Exclude from processing.
 # The following items will not be processed, by default.
