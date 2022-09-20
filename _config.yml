@@ -39,6 +39,7 @@ remote_theme: "mmistakes/jekyll-theme-basically-basic@1.4.5"
 plugins:
   - jekyll-feed
   - jekyll-remote-theme
+  - jekyll-paginate-v2
 
 lang: en-US
 
@@ -46,18 +47,24 @@ search: true
 search_full_content: false 
 
 # Pagination - https://jekyllrb.com/docs/pagination/
-paginate: 5
-paginate_path: /page:num/
+pagination: 
+  enabled: true
+  debug: false
+  #collections: 'posts'
+  per_page: 3
+  permalink: '/page/:num/'
 
-# Site Footer
-footer:
-  links:
-    - label: "Twitter"
-      icon: "fa-twitter-square"
-      url: https://twitter.com/bsummerz
-    - label: "GitHub"
-      icon: "fa-github"
-      url: https://github.com/wsummerhill
+# Site Footer - DOESNT WORK!????
+#footer:
+#  links:
+#    - label: "Twitter"
+#      icon: "icon-twitter"
+#      url: https://twitter.com/bsummerz
+#    - label: "GitHub"
+#      icon: "icon-github"
+#      url: https://github.com/wsummerhill
+
+copyright: "© 2022 Will Summerhill."
 
 
 # Exclude from processing.
