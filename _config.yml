@@ -51,8 +51,8 @@ pagination:
   enabled: true
   debug: false
   #collections: 'posts'
-  per_page: 3
-  permalink: '/page/:num/'
+  per_page: 4
+  permalink: '/page:num/'
 
 # Site Footer - DOESNT LOAD YET
 footer:
