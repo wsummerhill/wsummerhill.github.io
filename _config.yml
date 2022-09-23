@@ -37,22 +37,22 @@ github_username:  wsummerhill
 markdown: kramdown
 remote_theme: "mmistakes/jekyll-theme-basically-basic@1.4.5"
 plugins:
+  - jekyll-paginate
+  - jekyll-sitemap
+  - jekyll-gist
   - jekyll-feed
-  - jekyll-remote-theme
-  - jekyll-paginate-v2
+  - jemoji
+  - jekyll-include-cache
 
 lang: en-US
 
 search: true
 search_full_content: false 
 
-# Pagination - https://jekyllrb.com/docs/pagination/
-pagination: 
-  enabled: true
-  debug: false
-  #collections: 'posts'
-  per_page: 4
-  permalink: '/page:num/'
+# Paginate
+paginate: 4 # amount of posts to show
+paginate_path: /page:num/
+
 
 # Site Footer - DOESNT LOAD YET
 footer:
@@ -76,12 +76,10 @@ copyright: "© 2022 Will Summerhill."
 # Excluded items can be processed by explicitly listing the directories or
 # their entries' file path in the `include:` list.
 #
-# exclude:
-#   - .sass-cache/
-#   - .jekyll-cache/
-#   - gemfiles/
-#   - Gemfile
-#   - Gemfile.lock
+ #exclude:
+ #  - gemfiles/
+ #  - Gemfile
+ #  - Gemfile.lock
 #   - node_modules/
 #   - vendor/bundle/
 #   - vendor/cache/

@@ -3,8 +3,6 @@ layout: post
 title: "Cobalt Strike - BOF Collection"
 date: 2022-08-05
 categories: redteam cobaltstrike pentest pentesting bof
-pagination: 
-  enabled: true
 published: true
 ---
 

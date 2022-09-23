@@ -16,7 +16,12 @@ gem "minima", "~> 2.5"
 # gem "github-pages", group: :jekyll_plugins
 # If you have any plugins, put them here!
 group :jekyll_plugins do
-  gem "jekyll-feed", "~> 0.12"
+  gem "jekyll-paginate"
+  gem "jekyll-sitemap"
+  gem "jekyll-gist"
+  gem "jekyll-feed"
+  gem "jemoji"
+  gem "jekyll-include-cache"
 end
 
 ## REMOTE THEME
@@ -39,5 +44,4 @@ gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
 
 gem "github-pages", "~> 227", group: :jekyll_plugins
 
-# Pagination
-gem 'jekyll-paginate-v2', github: 'sverrirs/jekyll-paginate-v2'
+
