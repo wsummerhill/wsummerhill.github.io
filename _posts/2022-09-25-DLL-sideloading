@@ -1,17 +1,22 @@
 ---
 layout: post
-title: "DLL side-loading"
+title: "DLL Side-Loading Exploitation"
 date: 2022-09-25
 categories: DLL sideload exploit cpp C++
+pagination: 
+  enabled: true
 published: false
 ---
 
-## DLL side-loading
+## DLL Side-Loading
 
-I'm going to cover an example of how to perform a DLL side-load from start to finish using a C++ payload and legitimate DLL commonly found on disk. 
+I'm going to cover an example of how to perform a DLL side-load from start to finish using a C++ payload and a legitimate DLL commonly found on disk. 
 
-In this post I'll walk through how to choose an EXE and DLL to side-load, how to find the exported functions needed to side-load the DLL,
-how to create the malicous DLL, and then to execute everything together for a successful side-load attack.
+In this post I'll walk through the following:
+- How to choose an EXE and DLL to side-load
+- How to find the exported functions needed to side-load the DLL
+- How to create the malicous DLL
+- Put everything together for a successful DLL side-load attack
 
 But first...
 
