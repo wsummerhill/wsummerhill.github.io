@@ -3,6 +3,8 @@ layout: post
 title: "Sans GXPN - Course Review"
 date: 2019-03-24
 categories: sans gxpn course certification cert pentest pentesting
+pagination: 
+  enabled: true
 published: true
 ---
 
