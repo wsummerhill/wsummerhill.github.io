@@ -1,4 +1,9 @@
-
+---
+layout: post
+title: "OSCP Review"
+date: 2018-07-27
+categories: oscp offensive security offsec
+published: true
 ---
 # Review of my OSCP experience
 [Course link](https://www.offensive-security.com/pwk-oscp/)
@@ -26,17 +31,13 @@ The three big machines are **SUFFERANCE**, **HUMBLE** and **PAIN**. Each are ext
 
 
 In my first 3 months of lab access I was able to get 35 to 40 machines by the time my lab expired. I was pretty happy with this but still wasn’t sure about how I’d do in the exam considering its difficulty level I kept hearing about. I didn’t go too far into the additional networks (outside of the main network) since I didn’t have time but I got most of the main network and the dependent machines. I booked my exam before finishing the lab since there’s a wait time for an available exam time slot and I recommend you do the same if you don’t want to wait after finishing your lab. I had about a week before my exam after my lab time ended which seemed fair. 
+
 Pre-exam review:
-
-    Practice privilege escalation on both Linux and Windows!
-
-    Get your privilege escalation scripts/tools ready
-
-    Have some commonly used exploits ready to go - downloaded/compiled for quick use
-
-    Review the buffer overflow again to be sure you can knock it out right away, but be prepared for some curve balls in case
-
-    Finally, review any weak spots you may have
+- Practice privilege escalation on both Linux and Windows!
+- Get your privilege escalation scripts/tools ready
+- Have some commonly used exploits ready to go - downloaded/compiled for quick use
+- Review the buffer overflow again to be sure you can knock it out right away, but be prepared for some curve balls in case
+- Finally, review any weak spots you may have
 
 
 ## Exam #1 Experience
@@ -47,12 +48,14 @@ After that I reviewed Nmap files created from a simple bash script I wrote which
 
 Throughout the day I eventually got the 25 points from the BO and only 10 points on one of the boxes but didn’t get the privilege escalation. Late in the evening I was getting worn down and de-motivated so I took a food break to refresh and think about what to do with the time remaining. I figured I wasn’t going to pass and got a few hours of sleep before trying agian in the morning before my exam time expired. By the end of it I had 2 boxes with 3 remaining - only half the points required to pass. In my case it didn’t even make sense to bother with the report since I knew I had already failed. 
 
-I was demotivated at first after failing my first attempt but I knew what I needed to do in order to pass.
+_I was demotivated at first after failing my first attempt but I knew what I needed to do in order to pass._
 
 The next month was dedicated to another 30 days of lab time and I knew what I had to do to pass that grueling exam. I went through all the boxes on the main network one by one without looking at my old notes and tried to hack them as fast as I could. This way I was preparing myself for the exam by doing things as fast as possible, including privilege escalation, since I knew you can’t mess around in that 24 hour time period. 
 
 After that, I focused on privilege escalation for both Windows and Linux from some of the machines which I already knew the credentials for. Then it was go-time again… 
-Exam #2 Experience
+
+
+## Exam #2 Experience
 
 I booked the exam at a similar time and day as the previous attempt. I was well rested and felt prepared for what the next 24 hours would bring. I started off strong with the buffer overflow and mad sure I didn’t make the same mistakes as last time by missing any bad characters. Within the first 20 minutes I had the BO for 25 quick points and was onto the rest of the network. 
 
@@ -65,7 +68,7 @@ The next day I worked on the report for most of the day and wrote a total of ~28
 
 Several days later I received one of the best emails to ever show up in my inbox.
 
-**_I PASSED! What a amazing journey._**
+### **_I PASSED! What a amazing journey._**
 
 
 ## Final word
