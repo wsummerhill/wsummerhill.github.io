@@ -10,7 +10,7 @@ published: true
 
 I signed up for the OSCP in January of 2017 for 90 consecutive days of lab access. At the time I haven’t pentested as a profession before but had experience with Kali and BackTrack in a 1 year post-graduate program for Computer and Network Systems Security. This course, as well as my computer science and programming background, helped me have a base understanding of some of the concepts in the course and with scripting abilities which proved to be useful (Python, specifically).
 
-The Penetration Testing with Kali Linux (PWK) course is the online course designed for the OSCP exam. I’d highly recommend everyone be efficient in Kali and know their way around a Linux box before even attempting the PWK course. Being proficient with Metasploit is another useful skill to have which is invaluable to know before starting. One can go through the free online Metasploit Unleashed course beforehand which has key concepts for Metasploit that are continuously used in the PWK course.
+The Penetration Testing with Kali Linux (PWK) course is the online course designed for the OSCP exam. I’d highly recommend everyone be efficient in Kali and know their way around a Linux box before even attempting the PWK course. Being proficient with Metasploit is another useful skill to have which is invaluable to know before starting. One can go through the free online [Metasploit Unleashed](https://www.offensive-security.com/metasploit-unleashed/) course beforehand which has key concepts for Metasploit that are continuously used in the PWK course.
 
 
 ## Lab Review
