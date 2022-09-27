@@ -41,7 +41,6 @@ plugins:
   - jekyll-sitemap
   - jekyll-gist
   - jekyll-feed
-  - jemoji
   - jekyll-include-cache
 
 lang: en-US
@@ -52,6 +51,21 @@ search_full_content: false
 # Paginate
 paginate: 4 # amount of posts to show
 paginate_path: /page:num/
+
+
+# Left side bar - Site Author
+author:
+  name             : "Will Summerhill"
+  avatar           : 
+  bio              : "I am an **amazing** person."
+  location         : "Somewhere"
+  links:
+    - label: "Twitter"
+      icon: "fab fa-fw fa-twitter-square"
+      url: "https://twitter.com/bsummerz"
+    - label: "GitHub"
+      icon: "fab fa-fw fa-github"
+      url: "https://github.com/wsummerhill/"
 
 
 # Site Footer - DOESNT LOAD YET
