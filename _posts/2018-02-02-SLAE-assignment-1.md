@@ -7,10 +7,6 @@ published: true
 
 ### SecurityTube Linux Assembly Expert (SLAE) Course Exercises
 
-[Course Link](https://www.pentesteracademy.com/course?id=3)
-
-Student ID: **SLAE-1109**
-
 [GitHub code repo](https://github.com/wsummerhill/SLAE)
 
 Assignment 1 of the SLAE requires students to create a TCP bind shell in assembly which binds to a port and executes a shell on an incoming connection. Additionally, the port number should be configurable upon execution.
