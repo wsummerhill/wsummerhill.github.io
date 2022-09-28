@@ -67,7 +67,7 @@ paginate_path: /page:num/
 author:
   name             : "Will Summerhill"
   avatar           : 
-  bio              : "I am a _**wonderful**_ person."
+  bio              : "hak n profit"
   location         : "Canada"
   links:
     - label: "Twitter"
@@ -89,7 +89,7 @@ footer:
       url: "https://github.com/wsummerhill"
 
 # Footer - Copyright
-copyright: "© 2022 Will Summerhill."
+#copyright: "© 2022 Will Summerhill."
 
 
 defaults:
