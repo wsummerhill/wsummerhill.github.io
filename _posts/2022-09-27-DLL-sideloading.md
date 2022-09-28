@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "DLL Side-Loading Exploitation"
 date: 2022-09-27
 categories: DLL sideload exploit cpp C++

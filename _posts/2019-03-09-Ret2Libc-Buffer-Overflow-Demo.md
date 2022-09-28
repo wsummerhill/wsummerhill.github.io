@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Ret2libc Buffer Overflow Demo Video"
 date: 2019-03-19
 categories: sans gxpn course certification cert pentest pentesting ret2libc libc bufferoverflow

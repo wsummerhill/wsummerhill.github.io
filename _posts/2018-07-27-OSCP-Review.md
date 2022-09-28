@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "OSCP Review"
 date: 2018-07-27
 categories: oscp offensive security offsec

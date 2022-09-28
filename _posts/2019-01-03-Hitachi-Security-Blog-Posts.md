@@ -1,5 +1,4 @@
 ---
-layout: post
 title: "Hitachi Security Blog Posts"
 date: 2019-01-03
 categories: hitachi security blog posts
