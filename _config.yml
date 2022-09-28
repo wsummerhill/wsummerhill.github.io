@@ -67,7 +67,7 @@ paginate_path: /page:num/
 author:
   name             : "Will Summerhill"
   avatar           : 
-  bio              : "hak n profit"
+  bio              : "red teaming | penetration testing"
   location         : "Canada"
   links:
     - label: "Twitter"
