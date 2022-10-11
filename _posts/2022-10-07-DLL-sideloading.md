@@ -152,7 +152,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
 
 Before we can finalize the malicious DLL, we will need to get a list of exported functions from the existing legitimate DLL on disk and add it to our malicious DLL. In order for the executable and legit DLL to run properly with our malicious DLL, we have to add the exported functions to the malicious DLL to forward these functions to the legitimate DLL.<br /><br />
 
-Now to get the exported functions from the legitimate DLL **mpsvc.dll** at its expected location ([detailed here](https://hijacklibs.net/entries/microsoft/built-in/mpsvc.html)), we can use this [PowerShell script](https://gist.github.com/wsummerhill/23c138be8f953155e20c01055d6cf53f#file-get-exports-ps1) with the following syntax:<br />
+Now to get the exported functions from the legitimate DLL **mpsvc.dll** at its expected location ([detailed here](https://hijacklibs.net/entries/microsoft/built-in/mpsvc.html)), we can use this [PowerShell script](https://gist.github.com/wsummerhill/23c138be8f953155e20c01055d6cf53f) with the following syntax:<br />
 ```
 PS> . .\Get-DLL-Exports.ps1
 PS> Get-DLL-Exports -DllPath %PROGRAMDATA%\Microsoft\Windows Defender\Platform\%VERSION%\MpSvc.dll -ExportsToCpp C:\output\folder\MpSvc-exports.txt
