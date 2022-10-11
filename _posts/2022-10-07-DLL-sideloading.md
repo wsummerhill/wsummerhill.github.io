@@ -148,7 +148,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
 }
 ```
 
-### Finding exported functions from the DLL
+### Finding exported functions from the leigt DLL
 
 Before we can finalize the malicious DLL, we will need to get a list of exported functions from the existing legitimate DLL on disk and add it to our malicious DLL. In order for the executable and legit DLL to run properly with our malicious DLL, we have to add the exported functions to the malicious DLL to forward these functions to the legitimate DLL.<br /><br />
 
@@ -166,14 +166,23 @@ After executing the PowerShell command, the output file **MpSvc-exports.txt** sh
 #pragma comment (linker, "/export:ValidateDrop=MpSvc_orig.ValidateDrop,@1")
 ```
 
-We can see that **MpSvc.dll** only has 2 DLL exports which we will add to the top our C++ code now. A lot of DLLs will have MANY more exported functions, but in this case the DLL only has 2. <br />
+From the output, can see that **MpSvc.dll** only has 2 DLL exports which we will add to the top our C++ code now. A lot of DLLs will have MANY more exported functions, but in this case the DLL only has 2. <br />
 Once you add the exports to the DLL code, it should look something like this:
 
 ![image](https://user-images.githubusercontent.com/35749735/195206599-cb7f19ac-33e8-4ed4-9bd9-74ad328535cd.png)
 
-Compile your malicious DLL in Visual Studio or using `cl.exe` to the output file named **mpsvc.dll**!
+The export functions will forward execution to the legitimate DLL, named "**MpSvc_orig**" as seen from the output above. To use this, we'll have to rename the original DLL to **mpsvc_orig.dll** and _place it in the same folder as the legit EXE and malicious DLL to execute the DLL sideload_.
+
+Now compile your malicious DLL in Visual Studio or using `cl.exe` to the output DLL file named **mpsvc.dll**!
 
 
 ### Putting it all together
 
-FINAL STUFF HERE
+To combine everything together and actually exeucte our DLL sideload, we need to copy the **original EXE**, **malicious DLL**, and **original DLL** into the same folder. To do this, copy all of the following files to one folder with these naming conventions: <br />
+- MsMpEng.exe
+- mpsvc.dll (malicious DLL)
+- mpsvc_orig.dll (original DLL)
+
+
+
+
