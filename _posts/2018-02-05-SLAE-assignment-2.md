@@ -1,9 +1,9 @@
 ---
 title: "SLAE Assignment 2"
 date: 2018-02-05
-categories: securitytube slae linux assembly
 published: true
 ---
+<!-- categories: securitytube slae linux assembly -->
 
 ### SecurityTube Linux Assembly Expert (SLAE) Assignment 2
 
