@@ -1,8 +1,8 @@
 ---
 title: "DLL Sideloading Exploitation via 'DLL Proxying'"
-date: 2022-10-07
+date: 2022-10-02
 categories: DLL sideload proxying exploit cpp C++
-published: false
+published: true
 ---
 
 ## DLL SideLoading
@@ -176,23 +176,28 @@ After executing the PowerShell command, the output file **MpClient-exports.txt**
 ...
 ```
 
-From the output, can see that **MpSvc.dll** only has 2 DLL exports which we will add to the top our C++ code now. A lot of DLLs will have MANY more exported functions, but in this case the DLL only has 2. <br />
+From the output, can see that **mpclient.dll** has many DLL exports which we can add to the top of our code now, just under the `#inclue` import lines.<br />
 Once you add the exports to the DLL code, it should look something like this:
 
 ![image](https://user-images.githubusercontent.com/35749735/195376423-8dd1add9-13d5-47c5-b167-f21cc59bcf5f.png)
 
-The export functions will forward execution to the legitimate DLL, named "**MpSvc_orig**" as seen from the output above. To use this, we'll have to rename the original DLL to **mpsvc_orig.dll** and _place it in the same folder as the legit EXE and malicious DLL to execute the DLL sideload_.
+The export functions will forward execution to the legitimate DLL, named "**mpclient_orig**" as seen from the output above. To use this, we'll have to rename the original DLL to **mpclient_orig.dll** and _place it in the same folder as the legit EXE and malicious DLL to execute the DLL sideload_.
 
-Now compile your malicious DLL in Visual Studio or using `cl.exe` to the output DLL file named **mpsvc.dll**!
+Now compile your malicious DLL in Visual Studio or using `cl.exe` to the output DLL file named **mpclient.dll**!
 
 
 ### Putting it all together
 
-To combine everything together and actually exeucte our DLL sideload, we need to copy the **original EXE**, **malicious DLL**, and **original DLL** into the same folder. To do this, copy all of the following files to one folder with these naming conventions: <br />
-- MsMpEng.exe
-- mpsvc.dll (malicious DLL)
-- mpsvc_orig.dll (original DLL)
+To combine everything together and actually exeucte our DLL sideload, we need to copy the **original EXE**, **malicious DLL**, and **original DLL** into the same folder. Place the following files to one folder with these naming conventions: <br />
+- MpCmdRun.exe
+- mpclient.dll (malicious DLL)
+- mpclient_orig.dll (original DLL)
+
+It should look something like this:
+![image](https://user-images.githubusercontent.com/35749735/195417269-99e84b29-dc21-41ea-af88-85999bffe7ba.png)
 
 
+Finally, we can double-click or execute **MpCmdRun.exe** from command-line and we should see calc.exe spawn in the foreground if it works properly! Note for this executable, you may have to disable Defender first to get it working. But generally as a proof-of-concept we've shown that the DLL sideload via DLL proxying of Windows Defender works!
 
+![image](https://user-images.githubusercontent.com/35749735/195417916-03906f38-3732-4943-869d-622c19965bc9.png)
 
