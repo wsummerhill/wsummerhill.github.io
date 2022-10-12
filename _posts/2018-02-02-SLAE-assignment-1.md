@@ -24,7 +24,7 @@ The networking socket functions can be found with cat /usr/include/linux/net.h w
 
 Putting everything together I got the assembly code below.
 
-```
+```assembly
 ;Author: Will Summerhill
 ;Create shell_bind_tcp shellcode
 ;bind to a port - accept as input
@@ -183,7 +183,7 @@ objdump -d ./A1|grep '[0-9a-f]:'|grep -v 'file'|cut -f2 -d:|cut -f1-6 -d' '|tr -
 
 Now I’ll copy the shellcode into C so we can execute it. 
 
-```
+```cpp
 #include<stdio.h>
 #include<string.h>
 
