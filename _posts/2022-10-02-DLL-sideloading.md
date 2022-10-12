@@ -62,7 +62,7 @@ Then we can run the executable from its expected location `%PROGRAMFILES%\Window
 ![image](https://user-images.githubusercontent.com/35749735/195383300-269d1609-ae87-49f9-9eaa-3e5f672777e9.png)
 
 
-The DLL **mpclient.dll** is also a known DLL sideload that can be found in Hijack Libs at this [URL][https://hijacklibs.net/entries/microsoft/built-in/mpsvc.html](https://hijacklibs.net/entries/microsoft/built-in/mpclient.html).
+The DLL **mpclient.dll** is also a known DLL sideload that can be found in Hijack Libs at [this URL](https://hijacklibs.net/entries/microsoft/built-in/mpclient.html).
 
 A third option for finding your own DLL sideloads is to use the publicly available tool [Windows Feature Hunter (WFH)](https://github.com/ConsciousHacker/WFH) from [@ConsciousHacker](https://twitter.com/conscioushacker) which has its own documentation and method for finding vulnerable DLL sideloads on your own system. If you prefer to go the easy route, there is a CSV list within the GitHub repo of discovered EXEs and their DLL sideloads [found here](https://github.com/ConsciousHacker/WFH/blob/main/examples/) which has over 900 DLL sideloads you could abuse. Another blog has many more DLL hijacking examples [HERE](https://github.com/wietze/windows-dll-hijacking/blob/master/dll_hijacking_candidates.csv).
 
