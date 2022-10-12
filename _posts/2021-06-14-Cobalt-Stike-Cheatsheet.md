@@ -1,7 +1,7 @@
 ---
 title: "Cobalt Strike - Red Team CheatSheet"
 date: 2021-06-14
-categories: redteam cobaltstrike pentest
+categories: ["redteam","cobaltstrike","pentest"]
 published: true
 ---
 
