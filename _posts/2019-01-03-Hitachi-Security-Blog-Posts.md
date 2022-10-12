@@ -1,9 +1,9 @@
 ---
 title: "Hitachi Security Blog Posts"
 date: 2019-01-03
-categories: hitachi security blog posts
 published: true
 ---
+<!-- categories: hitachi security blog posts -->
 
 In 2018 I started doing some freelance writing for Hitachi security systems. The posts focused on introductory penetration 
 testing and vulnerability assessment concepts and were more geared towards executives and C-level members. I had a fun time 
