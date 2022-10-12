@@ -24,7 +24,7 @@ The networking socket functions can be found with cat /usr/include/linux/net.h w
 
 Putting everything together I got the assembly code below.
 
-```assembly
+```bash
 ;Author: Will Summerhill
 ;Create shell_bind_tcp shellcode
 ;bind to a port - accept as input
