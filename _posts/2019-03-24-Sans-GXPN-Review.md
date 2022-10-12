@@ -1,9 +1,9 @@
 ---
 title: "Sans GXPN - Course Review"
 date: 2019-03-24
-categories: sans gxpn course certification cert pentest pentesting
 published: true
 ---
+<!-- categories: sans gxpn course certification cert pentest pentesting -->
 
 In October of 2018 I had the lucky opportunity to take the Sans SEC660 ["Advanced Penetration Testing, Exploit Writing, and Ethical Hacking"](https://www.sans.org/cyber-security-courses/advanced-penetration-testing-exploits-ethical-hacking/) in-person course. I chose to take the course in Amsterdam since I heard great things about the instructor teaching the course there - Jake Williams. If you don't know Jake I suggest you look him up on twitter at [@MalwareJake](https://twitter.com/MalwareJake). He has seemingly infinite knowledge of security and can deep dive into any subject you ask him about on the spot. 
 
