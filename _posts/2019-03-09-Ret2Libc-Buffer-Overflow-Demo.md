@@ -1,9 +1,9 @@
 ---
 title: "Ret2libc Buffer Overflow Demo Video"
 date: 2019-03-19
-categories: sans gxpn course certification cert pentest pentesting ret2libc libc bufferoverflow
 published: true
 ---
+<!-- categories: sans gxpn course certification cert pentest pentesting ret2libc libc bufferoverflow -->
 
 A little demo walk through I made of a Linux Ret2Libc style buffer overflow to bypass DEP stack protections which is featured in the Sans GXPN course and certification. 
 
