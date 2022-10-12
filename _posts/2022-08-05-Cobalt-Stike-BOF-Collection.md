@@ -1,9 +1,10 @@
 ---
 title: "Cobalt Strike - BOF Collection"
 date: 2022-08-05
-categories: redteam cobaltstrike pentest pentesting bof
 published: true
 ---
+
+<!-- categories: redteam cobaltstrike pentest pentesting bof -->
 
 Useful Cobalt Strike Beacon Object Files (BOFs) used during red teaming and penetration testing engagements.
 
