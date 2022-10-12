@@ -3,7 +3,6 @@ title: "SLAE Assignment 1"
 date: 2018-02-02
 published: true
 ---
-<!-- categories: securitytube slae linux assembly -->
 
 ### SecurityTube Linux Assembly Expert (SLAE) Course Exercises
 
