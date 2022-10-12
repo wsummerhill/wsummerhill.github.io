@@ -5,7 +5,7 @@ categories: DLL sideload proxying exploit cpp C++
 published: true
 ---
 
-## DLL SideLoading
+## DLL Sideloading
 
 I'm going to cover an example of how to perform a DLL sideload from start to finish using a C++ payload and a legitimate DLL commonly found on disk. The specific technique covered is known as "**DLL proxying**" where we use the legitimate DLL along with a malicious DLL which exports all the functions that the legit DLL exports. <br >
 
