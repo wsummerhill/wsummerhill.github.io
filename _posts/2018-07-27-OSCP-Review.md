@@ -1,9 +1,10 @@
 ---
 title: "OSCP Review"
 date: 2018-07-27
-categories: oscp offensive security offsec
 published: true
 ---
+<!-- categories: oscp offensive security offsec -->
+
 # Review of my OSCP experience
 [Course link](https://www.offensive-security.com/pwk-oscp/)
 
