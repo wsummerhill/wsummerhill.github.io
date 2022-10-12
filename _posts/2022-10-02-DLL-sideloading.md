@@ -1,9 +1,10 @@
 ---
 title: "DLL Sideloading Exploitation via 'DLL Proxying'"
 date: 2022-10-02
-<!--- categories: DLL sideload proxying exploit cpp C++ -->
 published: true
 ---
+
+<!--- categories: DLL sideload proxying exploit cpp C++ -->
 
 ## DLL Sideloading
 
