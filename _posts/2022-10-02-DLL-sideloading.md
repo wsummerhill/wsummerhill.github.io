@@ -27,16 +27,16 @@ _"Side-loading involves hijacking which DLL a program loads.
 But rather than just planting the DLL within the search order of a program then waiting for the victim application to be invoked, adversaries may 
 directly side-load their payloads by planting then invoking a legitimate application that executes their payload(s)."_
 
-So we need to choose a legitimate EXE, find a DLL that it loads from disk, create a malicious DLL which runs shellcode, then copy or upload the EXE and DLL together to the same folder, and upon executing the EXE it should sideload the malicious DLL from within the same folder.
+So we need to choose a legitimate EXE, find a DLL that it loads from disk, create a malicious DLL which runs shellcode, then copy/upload the EXE and DLL  to the same folder. Upon executing the EXE, it should sideload the malicious DLL hosted in the same folder.
 
 
 ### What is DLL proxying
-This specific technique of DLL hijacking is called DLL proxying which uses the following steps:
+The specific technique of DLL hijacking we'll walkthrough is called DLL proxying which uses the following steps:
 1. EXE starts and calls `malicious.dll` in same folder
 2. `malicious.dll` calls legitimate `dll_orig.dll` in same folder by exporting all functions from the legitimate DLL
-3. Shellcode/payload runs in `malicious.dll` and also runs exported functions from `dll_orig.dll` 
+3. Shellcode/payload runs in `malicious.dll` and also calls `dll_orig.dll` from the exported functions 
 <br />
-The execution flow of DLL proxying looks like this: [source](https://www.ired.team/offensive-security/persistence/dll-proxying-for-persistence)
+The execution flow of DLL proxying looks like this ([Source: ired.team](https://www.ired.team/offensive-security/persistence/dll-proxying-for-persistence)):
 
 ![image](https://user-images.githubusercontent.com/35749735/195198423-f5e76979-65ec-480b-a4c3-a2e032149e81.png)
 
@@ -56,12 +56,12 @@ Alternatively, we could also use [Procmon](https://learn.microsoft.com/en-us/sys
 We can scroll through the output of Procmon to find executables and DLLs that are currently being loaded on the system. As an example, if we wanted to search for a DLL sideload against Windows Defender's AMSI scanner (**MpCmdRun.exe**), we can add the following filter: 
 - __Process Name -> is -> MpCmdRun.exe__ <br />
 
-Then we can run the executable from its expected location `%PROGRAMFILES%\Windows Defender\mpcmdrun.exe`, and in Procmon we can see the DLLs being loaded by the **MpCmdRun.exe** process to sideload. The target DLL **mpclient.dll** looks like a good target!
+Then we can run the executable from its expected location `%PROGRAMFILES%\Windows Defender\mpcmdrun.exe`, and in Procmon we can see the DLLs being loaded by the **MpCmdRun.exe** process which we could attempt to sideload. The target DLL **mpclient.dll** looks like a good target!
 
 ![image](https://user-images.githubusercontent.com/35749735/195383300-269d1609-ae87-49f9-9eaa-3e5f672777e9.png)
 
 
-Also, the DLL **mpclient.dll** is a known DLL sideload that can be found in Hijack Libs at this [URL][https://hijacklibs.net/entries/microsoft/built-in/mpsvc.html](https://hijacklibs.net/entries/microsoft/built-in/mpclient.html).
+The DLL **mpclient.dll** is also a known DLL sideload that can be found in Hijack Libs at this [URL][https://hijacklibs.net/entries/microsoft/built-in/mpsvc.html](https://hijacklibs.net/entries/microsoft/built-in/mpclient.html).
 
 A third option for finding your own DLL sideloads is to use the publicly available tool [Windows Feature Hunter (WFH)](https://github.com/ConsciousHacker/WFH) from [@ConsciousHacker](https://twitter.com/conscioushacker) which has its own documentation and method for finding vulnerable DLL sideloads on your own system. If you prefer to go the easy route, there is a CSV list within the GitHub repo of discovered EXEs and their DLL sideloads [found here](https://github.com/ConsciousHacker/WFH/blob/main/examples/) which has over 900 DLL sideloads you could abuse. Another blog has many more DLL hijacking examples [HERE](https://github.com/wietze/windows-dll-hijacking/blob/master/dll_hijacking_candidates.csv).
 
@@ -70,11 +70,11 @@ A third option for finding your own DLL sideloads is to use the publicly availab
 
 Once we've found our executable and DLL sideload to target, we can now start to create our malicous DLL which will execute shellcode. In this example, we're going to target the **MpCmdRun.exe (Windows Defender)** process with the DLL sideload of **mpclient.dll**.
 
-Start by creating a new C++ project in Visual Studio for a "Dyamic Library" or make a new TXT file in a text editor to manually write your DLL. Visual Studio will compile the C++ DLL for you, otherwise if you're using a text editor then you can compile it using the **cl.exe** command-line utility.
+Start by creating a new C++ project in Visual Studio for a "Dyamic-Link Library (DLL)" or make a new TXT file in a text editor to manually write your DLL. Visual Studio will compile the C++ DLL for you, otherwise if you're using a text editor then you can compile it using the **cl.exe** command-line utility.
 
-We're going to create a relatively straightforward DLL which uses XOR decryption to decrypt shellcode and launch it via _CreateThread_. Upon execution, the shellcode will launch calc.exe as a proof-of-concept.
+We're going to create a relatively straightforward DLL which uses XOR decryption to decrypt shellcode and launch it via _CreateThread_. Upon execution, the shellcode will launch _calc.exe_ as a proof-of-concept.
 
-Here is the template code for our DLL **mpclient.dll** which executes shellcode to launch calc.exe:
+Here is the template code for our malicious DLL **mpclient.dll** which will run shellcode to spawn _calc.exe_:
 ```
 #include "pch.h"
 #include <windows.h>
@@ -151,9 +151,9 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
 
 ### Finding exported functions from the leigt DLL
 
-Before we can finalize the malicious DLL, we will need to get a list of exported functions from the existing legitimate DLL on disk and add it to our malicious DLL. In order for the executable and legit DLL to run properly with our malicious DLL, we have to add the exported functions to the malicious DLL to forward these functions to the legitimate DLL.<br /><br />
+Before we can finalize the malicious DLL, we will need to get a list of exported functions from the existing legitimate DLL on disk and add it to our malicious DLL. In order for the executable to run properly with our sideloaded DLL, we have to add the DLL's exported functions to the malicious DLL to forward these functions to the legit DLL on disk.<br /><br />
 
-Now to get the exported functions from the legitimate DLL **mpclient.dll** at its expected location ([detailed here](https://hijacklibs.net/entries/microsoft/built-in/mpclient.html)), we can use this [PowerShell script](https://gist.github.com/wsummerhill/23c138be8f953155e20c01055d6cf53f) with the following syntax:<br />
+Now to get the exported functions from the legitimate DLL **mpclient.dll** at its expected location ([detailed here](https://hijacklibs.net/entries/microsoft/built-in/mpclient.html)), we can use this [PowerShell script](https://gist.github.com/wsummerhill/23c138be8f953155e20c01055d6cf53f) with the following commands:<br />
 ```
 PS> . .\Get-DLL-Exports.ps1
 PS> Get-DLL-Exports -DllPath %PROGRAMDATA%\Microsoft\Windows Defender\Platform\%VERSION%\mpclient.dll -ExportsToCpp C:\output\folder\MpClient-exports.txt
@@ -183,12 +183,12 @@ Once you add the exports to the DLL code, it should look something like this:
 
 The export functions will forward execution to the legitimate DLL, named "**mpclient_orig**" as seen from the output above. To use this, we'll have to rename the original DLL to **mpclient_orig.dll** and _place it in the same folder as the legit EXE and malicious DLL to execute the DLL sideload_.
 
-Now compile your malicious DLL in Visual Studio or using `cl.exe` to the output DLL file named **mpclient.dll**!
+Now compile your malicious DLL in Visual Studio or using `cl.exe` to the output file named **mpclient.dll**!
 
 
 ### Putting it all together
 
-To combine everything together and actually exeucte our DLL sideload, we need to copy the **original EXE**, **malicious DLL**, and **original DLL** into the same folder. Place the following files to one folder with these naming conventions: <br />
+To combine everything together and actually execute our DLL sideload, we need to copy the **original EXE**, **malicious DLL**, and **original DLL** into the same folder. Place the following files to your target folder with these naming conventions: <br />
 - MpCmdRun.exe
 - mpclient.dll (malicious DLL)
 - mpclient_orig.dll (original DLL)
@@ -197,7 +197,7 @@ It should look something like this:
 ![image](https://user-images.githubusercontent.com/35749735/195417269-99e84b29-dc21-41ea-af88-85999bffe7ba.png)
 
 
-Finally, we can double-click or execute **MpCmdRun.exe** from command-line and we should see calc.exe spawn in the foreground if it works properly! Note for this executable, you may have to disable Defender first to get it working. But generally as a proof-of-concept we've shown that the DLL sideload via DLL proxying of Windows Defender works!
+Finally, we can double-click or execute **MpCmdRun.exe** from command-line and we should see _calc.exe_ spawn in the foreground if it properly worked! Note for this executable, you may have to disable Defender first to get it working. But generally as a proof-of-concept we've shown that the DLL sideload via DLL proxying of Windows Defender works!
 
 ![image](https://user-images.githubusercontent.com/35749735/195417916-03906f38-3732-4943-869d-622c19965bc9.png)
 
