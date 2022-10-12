@@ -36,7 +36,7 @@ This specific technique of DLL hijacking is called DLL proxying which uses the f
 2. `malicious.dll` calls legitimate `dll_orig.dll` in same folder by exporting all functions from the legitimate DLL
 3. Shellcode/payload runs in `malicious.dll` and also runs exported functions from `dll_orig.dll` 
 <br />
-The execution flow of DLL proxying looks like this ([source](https://www.ired.team/offensive-security/persistence/dll-proxying-for-persistence)):
+The execution flow of DLL proxying looks like this: [source](https://www.ired.team/offensive-security/persistence/dll-proxying-for-persistence)
 
 ![image](https://user-images.githubusercontent.com/35749735/195198423-f5e76979-65ec-480b-a4c3-a2e032149e81.png)
 
@@ -53,27 +53,28 @@ Alternatively, we could also use [Procmon](https://learn.microsoft.com/en-us/sys
 
 ![image](https://user-images.githubusercontent.com/35749735/192628830-12bbd8e2-3ddf-4b2a-9741-44634c1cfe0c.png)
 
-We can scroll through the output of Procmon to find executables and DLLs that are currently being loaded on the system. As an example, if we wanted to search for a DLL sideload against Windows Defender (**MsMpEng.exe**), we can add the following filter: 
-- __Process Name -> is -> MsMpEng.exe__ <br />
+We can scroll through the output of Procmon to find executables and DLLs that are currently being loaded on the system. As an example, if we wanted to search for a DLL sideload against Windows Defender's AMSI scanner (**MpCmdRun.exe**), we can add the following filter: 
+- __Process Name -> is -> MpCmdRun.exe__ <br />
 
-Assuming Windows Defender is currently running on the system, we can then see the DLLs being loaded by the **MsMpEng.exe** process to sideload. The target DLL **mpsvc.dll** looks like a good target!
+Then we can run the executable from its expected location `%PROGRAMFILES%\Windows Defender\mpcmdrun.exe`, and in Procmon we can see the DLLs being loaded by the **MpCmdRun.exe** process to sideload. The target DLL **mpclient.dll** looks like a good target!
 
-![image](https://user-images.githubusercontent.com/35749735/192629760-4a3b9418-fb9a-454b-888d-e895bd894c60.png)
+![image](https://user-images.githubusercontent.com/35749735/195383300-269d1609-ae87-49f9-9eaa-3e5f672777e9.png)
 
-Also, the DLL **mpsvc.dll** is a known DLL sideload that can be found in Hijack Libs at this [URL](https://hijacklibs.net/entries/microsoft/built-in/mpsvc.html).
+
+Also, the DLL **mpclient.dll** is a known DLL sideload that can be found in Hijack Libs at this [URL][https://hijacklibs.net/entries/microsoft/built-in/mpsvc.html](https://hijacklibs.net/entries/microsoft/built-in/mpclient.html).
 
 A third option for finding your own DLL sideloads is to use the publicly available tool [Windows Feature Hunter (WFH)](https://github.com/ConsciousHacker/WFH) from [@ConsciousHacker](https://twitter.com/conscioushacker) which has its own documentation and method for finding vulnerable DLL sideloads on your own system. If you prefer to go the easy route, there is a CSV list within the GitHub repo of discovered EXEs and their DLL sideloads [found here](https://github.com/ConsciousHacker/WFH/blob/main/examples/) which has over 900 DLL sideloads you could abuse. Another blog has many more DLL hijacking examples [HERE](https://github.com/wietze/windows-dll-hijacking/blob/master/dll_hijacking_candidates.csv).
 
 
 ### Creating a malicious DLL
 
-Once we've found our executable and DLL sideload to target, we can now start to create our malicous DLL which will execute shellcode. In this example, we're going to target the **MsMpEng.exe (Windows Defender)** process with the DLL sideload of **mpsvc.dll**.
+Once we've found our executable and DLL sideload to target, we can now start to create our malicous DLL which will execute shellcode. In this example, we're going to target the **MpCmdRun.exe (Windows Defender)** process with the DLL sideload of **mpclient.dll**.
 
 Start by creating a new C++ project in Visual Studio for a "Dyamic Library" or make a new TXT file in a text editor to manually write your DLL. Visual Studio will compile the C++ DLL for you, otherwise if you're using a text editor then you can compile it using the **cl.exe** command-line utility.
 
 We're going to create a relatively straightforward DLL which uses XOR decryption to decrypt shellcode and launch it via _CreateThread_. Upon execution, the shellcode will launch calc.exe as a proof-of-concept.
 
-Here is the template code for our DLL **mpsvc.dll** which executes shellcode to launch calc.exe:
+Here is the template code for our DLL **mpclient.dll** which executes shellcode to launch calc.exe:
 ```
 #include "pch.h"
 #include <windows.h>
@@ -152,24 +153,33 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
 
 Before we can finalize the malicious DLL, we will need to get a list of exported functions from the existing legitimate DLL on disk and add it to our malicious DLL. In order for the executable and legit DLL to run properly with our malicious DLL, we have to add the exported functions to the malicious DLL to forward these functions to the legitimate DLL.<br /><br />
 
-Now to get the exported functions from the legitimate DLL **mpsvc.dll** at its expected location ([detailed here](https://hijacklibs.net/entries/microsoft/built-in/mpsvc.html)), we can use this [PowerShell script](https://gist.github.com/wsummerhill/23c138be8f953155e20c01055d6cf53f) with the following syntax:<br />
+Now to get the exported functions from the legitimate DLL **mpclient.dll** at its expected location ([detailed here](https://hijacklibs.net/entries/microsoft/built-in/mpclient.html)), we can use this [PowerShell script](https://gist.github.com/wsummerhill/23c138be8f953155e20c01055d6cf53f) with the following syntax:<br />
 ```
 PS> . .\Get-DLL-Exports.ps1
-PS> Get-DLL-Exports -DllPath %PROGRAMDATA%\Microsoft\Windows Defender\Platform\%VERSION%\MpSvc.dll -ExportsToCpp C:\output\folder\MpSvc-exports.txt
+PS> Get-DLL-Exports -DllPath %PROGRAMDATA%\Microsoft\Windows Defender\Platform\%VERSION%\mpclient.dll -ExportsToCpp C:\output\folder\MpClient-exports.txt
 ```
 
-After executing the PowerShell command, the output file **MpSvc-exports.txt** should have all the DLL exports in it as shown below:
+After executing the PowerShell command, the output file **MpClient-exports.txt** should have all the DLL exports in it as shown below (shortened for brevity):
 ```
 // --> ADD ALL EXPORTS BELOW TO THE TOP OF YOUR .CPP APPLICATION <--
 #pragma once
-#pragma comment (linker, "/export:ServiceCrtMain=MpSvc_orig.ServiceCrtMain,@2")
-#pragma comment (linker, "/export:ValidateDrop=MpSvc_orig.ValidateDrop,@1")
+#pragma comment (linker, "/export:MpAddDynamicSignatureFile=MpClient_orig.MpAddDynamicSignatureFile,@43")
+#pragma comment (linker, "/export:MpAllocMemory=MpClient_orig.MpAllocMemory,@44")
+#pragma comment (linker, "/export:MpAmsiCloseSession=MpClient_orig.MpAmsiCloseSession,@45")
+#pragma comment (linker, "/export:MpAmsiNotify=MpClient_orig.MpAmsiNotify,@46")
+#pragma comment (linker, "/export:MpAmsiScan=MpClient_orig.MpAmsiScan,@47")
+#pragma comment (linker, "/export:MpAsrSetHipsUserExclusion=MpClient_orig.MpAsrSetHipsUserExclusion,@48")
+#pragma comment (linker, "/export:MpChangeCapability=MpClient_orig.MpChangeCapability,@49")
+#pragma comment (linker, "/export:MpCheckAccessForClipboardOperation=MpClient_orig.MpCheckAccessForClipboardOperation,@50")
+#pragma comment (linker, "/export:MpCheckAccessForClipboardOperationEx=MpClient_orig.MpCheckAccessForClipboardOperationEx,@51")
+#pragma comment (linker, "/export:MpCheckAccessForClipboardOperationEx2=MpClient_orig.MpCheckAccessForClipboardOperationEx2,@52")
+...
 ```
 
 From the output, can see that **MpSvc.dll** only has 2 DLL exports which we will add to the top our C++ code now. A lot of DLLs will have MANY more exported functions, but in this case the DLL only has 2. <br />
 Once you add the exports to the DLL code, it should look something like this:
 
-![image](https://user-images.githubusercontent.com/35749735/195206599-cb7f19ac-33e8-4ed4-9bd9-74ad328535cd.png)
+![image](https://user-images.githubusercontent.com/35749735/195376423-8dd1add9-13d5-47c5-b167-f21cc59bcf5f.png)
 
 The export functions will forward execution to the legitimate DLL, named "**MpSvc_orig**" as seen from the output above. To use this, we'll have to rename the original DLL to **mpsvc_orig.dll** and _place it in the same folder as the legit EXE and malicious DLL to execute the DLL sideload_.
 
