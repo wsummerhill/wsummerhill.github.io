@@ -9,4 +9,4 @@ Interests include:
 - Malware development - C#, C++
 - Evasion techniques
 - Active Directory exploitation
-- Teaching courses
+- Teaching
