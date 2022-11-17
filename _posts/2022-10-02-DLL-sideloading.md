@@ -147,7 +147,7 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpReserved) {
 }
 ```
 
-### Finding exported functions from the leigt DLL
+### Finding exported functions from the legit DLL
 
 Before we can finalize the malicious DLL, we will need to get a list of exported functions from the existing legitimate DLL on disk and add it to our malicious DLL. In order for the executable to run properly with our sideloaded DLL, we have to add the DLL's exported functions to the malicious DLL to forward these functions to the legit DLL on disk.<br /><br />
 
