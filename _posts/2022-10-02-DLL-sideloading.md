@@ -1,5 +1,5 @@
 ---
-title: "Malware Development: DLL Sideloading Exploit via 'DLL Proxying"
+title: "Malware Development: DLL Sideloading Exploit via 'DLL Proxying'"
 date: 2022-10-02
 categories: redteam
 published: true
