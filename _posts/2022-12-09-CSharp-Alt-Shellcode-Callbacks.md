@@ -21,5 +21,5 @@ Some of the most common callback functions that you may have heard of are EnumFo
 were MANY more documented callback functions that could be abused to execute shellcode in Windows. Some of the sources shared with  me or that I came across include:
 - t
 - t
-- (VX Underground)[https://www.vx-underground.org/windows.html]
+- [VX Underground Windows malware](https://www.vx-underground.org/windows.html)
 
