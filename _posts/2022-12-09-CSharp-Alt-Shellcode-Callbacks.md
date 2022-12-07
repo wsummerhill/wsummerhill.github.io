@@ -16,10 +16,10 @@ a task. Calls to a callback function pass indirectly from a managed application,
 So your code with callback functions would look like this:<br />
 ![image](https://user-images.githubusercontent.com/35749735/206265903-a15007be-40d8-4031-ab25-9b62ad517c8b.png)
 
-On top of that, there were many documented callback functions that could be abused to execute shellcode in Windows. Some of the sources shared with 
-me or that I came across include:
-- link
-- ink2
-- link3
 
+Some of the most common callback functions that you may have heard of are EnumFontFamilies(), EnumPrinters(), and EnumWindows(). On top of that, there 
+were MANY more documented callback functions that could be abused to execute shellcode in Windows. Some of the sources shared with  me or that I came across include:
+- t
+- t
+- (VX Underground)[https://www.vx-underground.org/windows.html]
 
