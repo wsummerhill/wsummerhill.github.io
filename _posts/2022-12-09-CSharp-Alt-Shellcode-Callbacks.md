@@ -1,7 +1,7 @@
 ---
 title: "CSharp Alterntive Shellcode Callbacks"
 date: 2022-12-09
-categories: malwaredev
+categories: malware
 published: true
 ---
 
