@@ -1,8 +1,8 @@
 ---
 title: "CSharp Alterntive Shellcode Callbacks"
-date: 2022-12-12
-categories: redteam
-published: false
+date: 2022-12-09
+categories: malwaredev
+published: true
 ---
 
 For a while now, people have been using alternative callback methods in C/CSharp payloads instead of the vanilla "CreateThread()" 
@@ -24,5 +24,38 @@ Some of the most common callback functions that you may have heard of are EnumFo
 - [Wra7h/FlavorTown](https://github.com/Wra7h/FlavorTown)
 
 
-I realized that there were numerous resources for C/C++ code samples to execute shellcode via callback funtions, but fewer resources  available for CSharp. Therefore, I wanted to convert some C code callback samples to their C# equivalents or attempt to discover undocumented callback functions for shellcode execution.
+I realized that there were numerous resources for C/C++ code samples to execute shellcode via callback funtions, but fewer resources  available for CSharp. Therefore, I wanted to convert some C code callback samples to their CSharp equivalents or attempt to discover undocumented callback functions for shellcode execution.
+
+
+Below is a list of all the callback functions I've documented to execute shellcode with in CSharp:
+```
+AddPropSheetPageProc
+CertEnumSystemStore
+CertEnumSystemStoreLocation
+CreateTimerQueueTimer
+CryptEnumOIDInfo
+DSA_EnumCallback
+EncryptedFileRaw
+EnumDateFormatsA
+EnumFontFamiliesW
+EnumLanguageGroupLocalesW
+EnumObjects
+EnumSystemCodePagesA
+EnumSystemGeoID
+EnumerateLoadedModules
+FiberContextEdit
+ImmEnumInputContext
+InitOnceExecuteOnce
+LdrEnumerateLoadedModules
+NotifyIpInterfaceChange
+NotifyTeredoPortChange
+SetTimer
+SetupCommitFileQueueW
+StackWalk
+SymEnumProcesses
+SymRegisterCallback
+```
+
+And finally, here is the GitHub repo of all the documented callback functions I created in CSharp and some of the C++ templates used:<br />
+LINK: [My CSharp Alternative Shellcode Callbacks repo](https://github.com/wsummerhill/CSharp-Alt-Shellcode-Callbacks)
 
