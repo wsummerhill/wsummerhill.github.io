@@ -1,5 +1,5 @@
 ---
-title: "CSharp Alterntive Shellcode Callbacks"
+title: "Malware Development: CSharp Alterntive Shellcode Callbacks"
 date: 2022-12-09
 categories: malware
 published: true
