@@ -65,7 +65,7 @@ paginate_path: /page:num/
 
 # Left side bar - Site Author
 author:
-  name             : "Will Summerhill"
+  name             : 
   avatar           : 
   bio              : "red teaming | penetration testing"
   location         : "Canada"
