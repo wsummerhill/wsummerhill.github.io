@@ -112,7 +112,7 @@ Now compiling the shellcode and executing we get a bind shell listening on port 
 
 ----------
 
-The assembly code can also be found here on my [Github](https://github.com/wsummerhill/SLAE/blob/master/Assignment%201).
+The assembly code can also be found here on my [Github](https://github.com/wsummerhill/SLAE/blob/master/Assignment%203).
 
 This blog post has been created for completing the requirements of the SecurityTube Linux Assembly Expert certification: http://www.securitytube-training.com/online-courses/securitytube-linux-assembly-expert
 
