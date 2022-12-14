@@ -27,7 +27,7 @@ Some of the most common callback functions that you may have heard of are `EnumF
 I realized that there were numerous resources for C/C++ code samples to execute shellcode via callback funtions, but fewer resources  available for CSharp. So I decided to convert some C code callback samples to their CSharp equivalents or attempt to discover undocumented callback functions for shellcode execution.
 
 
-Below is a list of all the callback functions I've documented so far to execute shellcode in CSharp:
+Below is a list of all the callback functions I've created malware samples for (so far) to execute shellcode in CSharp:
 ```
 AddPropSheetPageProc
 CertEnumSystemStore
@@ -56,6 +56,6 @@ SymEnumProcesses
 SymRegisterCallback
 ```
 
-And finally, here is the GitHub repo of all the documented callback functions malware samples I created in CSharp:<br />
+And finally, here is the GitHub repo of all the documented callback function malware samples I created in CSharp:<br />
 LINK: [My CSharp Alternative Shellcode Callbacks repo](https://github.com/wsummerhill/CSharp-Alt-Shellcode-Callbacks)
 
