@@ -67,7 +67,7 @@ paginate_path: /page:num/
 author:
   name             : 
   avatar           : 
-  bio              : "red teaming | penetration testing"
+  bio              : "red teaming | malware dev"
   location         : "Canada"
   links:
     - label: "Twitter"
