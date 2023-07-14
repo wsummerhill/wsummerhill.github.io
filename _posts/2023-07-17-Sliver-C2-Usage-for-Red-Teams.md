@@ -40,3 +40,11 @@ On your test system, download a Sliver client for your specific OS from the [lin
 /path/to/sliver-client_OS import sliver-user.cfg  # Import client
 /path/to/sliver-client_OS  # Connect to Sliver C2
 ```
+
+## Beacons
+
+
+## Staged Payloads
+
+Beacon received from staged listener payload:
+![image](https://github.com/wsummerhill/wsummerhill.github.io/assets/35749735/12d8f0df-a5d2-440f-972f-cd091a38b738)
