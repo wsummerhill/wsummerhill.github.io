@@ -36,7 +36,7 @@ I created some Terraform scripts to help automate this whole process found in my
 ## Connecting and Setup
 
 On your test system, download a Sliver client for your specific OS from the [link here](https://github.com/BishopFox/sliver/releases). Import your **sliver-user.cfg** config file and connect to the Sliver server with the following commands:<br />
-````
+```
 /path/to/sliver-client_OS import sliver-user.cfg  # Import client
 /path/to/sliver-client_OS  # Connect to Sliver C2
 ```
@@ -45,6 +45,10 @@ On your test system, download a Sliver client for your specific OS from the [lin
 
 
 ## Staged Payloads
+
+References:
+- https://github.com/BishopFox/sliver/wiki/Stagers
+- https://dominicbreuker.com/post/learning_sliver_c2_06_stagers/
 
 Beacon received from staged listener payload:
 ![image](https://github.com/wsummerhill/wsummerhill.github.io/assets/35749735/12d8f0df-a5d2-440f-972f-cd091a38b738)
