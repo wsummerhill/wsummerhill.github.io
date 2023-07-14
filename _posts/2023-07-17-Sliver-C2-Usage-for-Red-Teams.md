@@ -8,6 +8,7 @@ published: false
 [Sliver](https://github.com/BishopFox/sliver/) has been a popular open-source C2 in recent years and has had continuous improvements since its release. It's cross-platform and easy to setup which were both appealing to me when I first started using it. I wanted to learn how to setup Sliver as a C2 server for red teams so I decided to document it for my own reference and anyone else interested. Here's what we'll cover:
 
 - Sliver installation
+- Connecting and Setup
 - 
 
 ---------------------------------------------
@@ -32,4 +33,10 @@ __IMPORTANT STEP:__ *Don't forget to lock down your C2 server firewalls so that 
 
 I created some Terraform scripts to help automate this whole process found in my [repository here](https://github.com/wsummerhill/Automation-Scripts/tree/main/Sliver-C2-deployment_DigitalOcean).
 
-## test
+## Connecting and Setup
+
+On your test system, download a Sliver client for your specific OS from the [link here](https://github.com/BishopFox/sliver/releases). Import your **sliver-user.cfg** config file and connect to the Sliver server with the following commands:<br />
+````
+/path/to/sliver-client_OS import sliver-user.cfg  # Import client
+/path/to/sliver-client_OS  # Connect to Sliver C2
+```
