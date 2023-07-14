@@ -1,10 +1,35 @@
 ---
-title: "Sliver C2 Setup for Red Team Engagements"
+title: "Sliver C2 Deployment for Red Team Engagements"
 date: 2023-07-17
 categories: redteam
 published: false
 ---
 
-**Scenario:** You're on a red team engagement and want to execute .NET utilites in your Beacon but need to increase your chances at evasion and opsec. You obviously can't touch `execute-assembly` or similar utilities. You tried BOF.NET but sometimes the Beacon gets killed, or maybe you're hesitant to try BOF.NET at all (I've been there).
-<br />
+[Sliver](https://github.com/BishopFox/sliver/) has been a popular open-source C2 in recent years and has had continuous improvements since its release. It's cross-platform and easy to setup which were both appealing to me when I first started using it. I wanted to learn how to setup Sliver as a C2 server for red teams so I decided to document it for my own reference and anyone else interested. Here's what we'll cover:
 
+- Sliver installation
+- 
+
+---------------------------------------------
+
+## Sliver Installation
+
+Sliver documentation: [https://github.com/BishopFox/sliver/wiki](https://github.com/BishopFox/sliver/wiki)
+
+Spin up a Linux droplet/EC2/whatever to host your C2 server. Run the initial updates and install MinGW to allow compilation of shellcode/staged/DLL payloads:
+```
+apt update -y
+apt update --fix-missing -y
+apt install git mingw-w64 net-tools -y
+```
+
+Once the system is updated, Sliver is __very__ easy to install using the setup script: `curl https://sliver.sh/install|sudo bash` ([reference](https://github.com/BishopFox/sliver/#getting-started)). This will automatically start Sliver running in Daemon mode.
+
+You can then create a client config on your Sliver server to allow "multiplayer" connections: `./sliver-server operator --name sliver-user --lhost "<SLIVER-IP>" --save /root/sliver-user.cfg`.<br />
+Download the "**sliver-user.cfg**" to your local host using SCP or whatever file transfer app you like which you will use to connect to the server using a Sliver client.
+
+__IMPORTANT STEP:__ *Don't forget to lock down your C2 server firewalls so that only you can access it. You can do this through firewalls in your cloud console or UFW rules. You will also need to open it up to your redirector (in our case over HTTPS) but more on this later.*
+
+I created some Terraform scripts to help automate this whole process found in my [repository here](https://github.com/wsummerhill/Automation-Scripts/tree/main/Sliver-C2-deployment_DigitalOcean).
+
+## test
