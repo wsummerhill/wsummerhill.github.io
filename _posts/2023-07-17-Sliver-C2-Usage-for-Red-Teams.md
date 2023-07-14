@@ -39,14 +39,32 @@ On your test system, download a Sliver client for your specific OS from the [lin
 ```
 /path/to/sliver-client_OS import sliver-user.cfg  # Import client
 /path/to/sliver-client_OS  # Connect to Sliver C2
+Connecting to <SLIVER-IP>:31337 ...
+
+.------..------..------..------..------..------.
+|S.--. ||L.--. ||I.--. ||V.--. ||E.--. ||R.--. |
+| :/\: || :/\: || (\/) || :(): || (\/) || :(): |
+| :\/: || (__) || :\/: || ()() || :\/: || ()() |
+| '--'S|| '--'L|| '--'I|| '--'V|| '--'E|| '--'R|
+`------'`------'`------'`------'`------'`------'
+
+All hackers gain assist
+[*] Server v1.5.40 - c17c37857e54f0fa202c01cbd00a99a85f5f9f49
+[*] Welcome to the sliver shell, please type 'help' for options
+
+sliver >
 ```
+
+For our red team setup, we're going to use an HTTPS redirector pointing to your C2 server. We also need to make sure that the Sliver server is locked down using firewall rules by making it accessible ONLY to your own IP addresses and the soruce IPs of your redirector(s) open over port 443 to be the most opsec-safe. BE SURE that your Sliver server is NOT directly accessible over the Internet to anyone.<br />
+We're not actually going to cover HTTPS redirector setup as there are many different blogs and techniques to do this (i.e. [how-to-guides](https://howto.thec2matrix.com/attack-infrastructure/redirectors), [AWS lambda redirectors](https://blog.xpnsec.com/aws-lambda-redirector/), [bluescreenofjeff](https://bluescreenofjeff.com/2018-04-12-https-payload-and-c2-redirectors/), etc.). So for the rest of this post we'll assume you have already setup an HTTPS redirector!
 
 ## Beacons
 
 
+
 ## Staged Payloads
 
-References:
+Useful links:
 - https://github.com/BishopFox/sliver/wiki/Stagers
 - https://dominicbreuker.com/post/learning_sliver_c2_06_stagers/
 
