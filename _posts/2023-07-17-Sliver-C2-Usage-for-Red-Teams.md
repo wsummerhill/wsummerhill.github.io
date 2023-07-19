@@ -9,6 +9,7 @@ published: true
 
 - Sliver installation
 - Connecting and Setup
+- Redirectors
 - Beacons
 - Staged Payloads
 
