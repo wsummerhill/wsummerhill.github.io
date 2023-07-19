@@ -234,8 +234,8 @@ namespace Custom_Stager
 Compile the C# payload with csc.exe in to an EXE for testing purposes: `C:\windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /target:exe /platform:x64 /out:Sliver-payload.exe Sliver_staged-payload.cs`
 
 Run the output payload `./Sliver-payload.exe` and you should see a new beacon pop up in Sliver!
-![image](https://github.com/wsummerhill/wsummerhill.github.io/assets/35749735/12d8f0df-a5d2-440f-972f-cd091a38b738)
+![image](https://github.com/wsummerhill/wsummerhill.github.io/assets/35749735/ced5d4ca-1f86-459b-92aa-c81bce707990)
 
-Of course for a red team, we want to further customize the stage 1 payload to make it as unique and opsec-safe as possible. We aren't going to cover that here as this is just a proof-of-concept, but get as creative as possible!
+Of course for a red team, we want to further customize the stage 1 payload to make it as unique and opsec-safe as possible. We aren't going to cover that here as this is just a proof-of-concept, but get as creative as possible to byass that AV/EDR!
 <br />
 Hope you all enjoyed the Sliver setup!
