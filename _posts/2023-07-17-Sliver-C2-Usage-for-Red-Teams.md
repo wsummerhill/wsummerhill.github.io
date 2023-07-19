@@ -79,8 +79,13 @@ We're not actually going to cover HTTPS redirector setup as there are many diffe
 
 Moving on... Now we'll have to start an HTTPS listener in Sliver which only accepts connectsion from our redirector host. But first, we'll need to setup an SSL certificate with a public/private key (without encryption) to have a valid SSL/TLS connection. You could use a self-signed one (using the `--self-signed` option), but for red teams we would much rather have a valid/signed cert for our HTTPS connections to be less suspicious.
 
-To create your SSL/TLS certificate for HTTPS communications with your listener, you can use whatever service/app you prefer. LetsEncrypt is probably the most common method, and recently I started using AWS Certificate Manager (ACM) certs. To automate this with LetsEncrypt, there is a script from RedSiege called [httpsc2doneright.sh](https://github.com/RedSiege/RandomScripts/blob/main/Cobalt%20Scripts/httpsc2doneright.sh).
+To create your SSL/TLS certificate for HTTPS communications with your listener, you can use whatever service/app you prefer. LetsEncrypt is probably the most common method, and recently I started using AWS Certificate Manager (ACM) certs.<br />
+To automate this with LetsEncrypt, I modified one of RedSiege's script for setting up a cert Cobalt Strike and made it compatible with Sliver. [Link HERE](https://github.com/wsummerhill/Automation-Scripts/blob/main/HttpsGenericC2DoneRight.sh).<br />
+Drop the `HttpsGenericC2DoneRight.sh` script on your Sliver teamserver and run it with Sudo privileges. Enter in your C2 domain (with an A record pointing to your C2 server) and any private key password:
+![image](https://github.com/wsummerhill/wsummerhill.github.io/assets/35749735/fd02dfbc-dc55-4ad4-83d9-1bea28e1a12e)
 
+If everything works properly, the script should output you a domain store file, cert.pem and privkey.pem files in your /root directory. Copy these files to your local system with your Sliver client installed.
+![image](https://github.com/wsummerhill/wsummerhill.github.io/assets/35749735/a57e5b26-eee7-4556-aa19-5fa3b8307204)
 
 ## Beacons
 
