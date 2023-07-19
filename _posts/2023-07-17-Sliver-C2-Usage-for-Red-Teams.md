@@ -61,7 +61,7 @@ sliver >
 
 For our red team setup, we're going to use an HTTPS redirector pointing to your C2 server. We also need to make sure that the Sliver server is locked down using firewall rules by making it accessible ONLY to your own IP addresses and the soruce IPs of your redirector(s) open over port 443 to be the most opsec-safe. BE SURE that your Sliver server is NOT directly accessible over the Internet to anyone.<br />
 To do this with UFW rules, it would look something like this:<br />
-```
+```bash
 # Allow your IPs
 ufw allow from <YOUR-IP>
 ufw allow from <YOUR-IP-2>
