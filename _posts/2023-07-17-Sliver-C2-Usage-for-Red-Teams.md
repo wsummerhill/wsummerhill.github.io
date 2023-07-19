@@ -19,7 +19,7 @@ published: true
 Sliver documentation: [https://github.com/BishopFox/sliver/wiki](https://github.com/BishopFox/sliver/wiki)
 
 Spin up a Linux droplet/EC2/whatever to host your C2 server. Run the initial updates and install MinGW to allow compilation of shellcode/staged/DLL payloads:
-```
+```bash
 apt update -y
 apt update --fix-missing -y
 apt install git mingw-w64 net-tools -y
@@ -40,7 +40,7 @@ I created some Terraform scripts to help automate this whole process found in my
 ## Connecting and Setup
 
 On your test system, download the Sliver client for your specific OS from the [link here](https://github.com/BishopFox/sliver/releases). Import your **sliver-user.cfg** config file from the previous steps and connect to the Sliver server with the following commands:<br />
-```
+```bash
 ./sliver-client_OS import ./sliver-user.cfg  # Import client
 ./sliver-client_OS  # Connect to Sliver C2
 Connecting to <SLIVER-IP>:31337 ...
@@ -119,7 +119,7 @@ Once you create the staged listener, your stage 2 payload should be available at
 Now, we need to create a stage 1 payload to reach out to download and decrypt/decode our stage 2 payload then execute it. This should be as custom as possible for a red team, but a good starting point is the provided C# template [here in the Sliver documentation](https://github.com/BishopFox/sliver/wiki/Stagers#encrypted-stage-example) (note for this payload you'll have to add gzip compression if you chose that option in your `stage-listener` command).
 
 For the stadnard template, update the C# payloads variables to fit your url, AES key, and AES IV at the top of the script. See the full sample payload here:
-```
+```csharp
 using System;
 using System.Collections.Generic;
 using System.IO;
