@@ -2,7 +2,7 @@
 title: "Sliver C2 Deployment for Red Team Engagements"
 date: 2023-07-17
 categories: redteam
-published: false
+published: true
 ---
 
 [Sliver](https://github.com/BishopFox/sliver/) has been a popular open-source C2 in recent years and has had continuous improvements since its release. It's cross-platform and easy to setup which were both appealing to me when I first started using it. I wanted to learn how to setup Sliver as a C2 server for red teams so I decided to document it for my own reference and anyone else interested. Here's what we'll cover:
