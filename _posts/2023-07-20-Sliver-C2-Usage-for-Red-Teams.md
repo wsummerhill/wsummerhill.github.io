@@ -1,6 +1,6 @@
 ---
 title: "Sliver C2 Deployment for Red Team Engagements"
-date: 2023-07-20
+date: 2023-07-25
 categories: redteam
 published: true
 ---
