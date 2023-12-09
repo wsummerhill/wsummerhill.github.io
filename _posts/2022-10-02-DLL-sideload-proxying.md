@@ -198,9 +198,9 @@ python Find-DLL-Exports_DLL-Proxying.py "C:\ProgramData\Microsoft\Windows Defend
 #pragma comment(linker,"/export:MpAmsiScan=C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.2201.10-0\\MpClient.MpAmsiScan,@47")
 #pragma comment(linker,"/export:MpAsrSetHipsUserExclusion=C:\\ProgramData\\Microsoft\\Windows Defender\\Platform\\4.18.2201.10-0\\MpClient.MpAsrSetHipsUserExclusion,@48")
 ...
-
-
 ```
+
+Note that the DLL exports point to the full path of the DLL on disk so we don't need to have the original DLL in the current folder with our executable and malicious DLL.
 
 ### Putting it all together
 
