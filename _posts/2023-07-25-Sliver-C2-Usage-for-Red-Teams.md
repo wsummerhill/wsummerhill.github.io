@@ -31,7 +31,7 @@ Once the system is updated, Sliver is __very__ easy to install using the setup s
 This will automatically start Sliver running in [Daemon mode](https://github.com/BishopFox/sliver/wiki/Daemon-Mode). 
 
 You can then create a client config on your Sliver server to allow "multiplayer" connections: <br />
-`./sliver-server operator --name sliver-user --lhost "<SLIVER-IP>" --save /root/sliver-user.cfg`<br />
+`/root/sliver-server operator --name sliver-user --lhost "<SLIVER-IP>" --save /root/sliver-user.cfg`<br />
 Download the output "**sliver-user.cfg**" file to your local host using SCP or whatever file transfer app you like which you will use to connect to the server using a Sliver client.
 
 __IMPORTANT STEP:__ *Don't forget to lock down your C2 server firewalls so that only you can access it. You can do this through firewalls in your cloud console, UFW rules, IPTables, etc. You will also need to open it up to your redirector (in our case over HTTPS) but more on this later.*
@@ -89,6 +89,25 @@ Drop the `HttpsGenericC2DoneRight.sh` script on your Sliver teamserver and run i
 
 If everything works properly, the script should output you a domain store file, cert.pem and privkey.pem files in your `/root` directory. Copy these files to your local system with your Sliver client installed.
 ![image](https://github.com/wsummerhill/wsummerhill.github.io/assets/35749735/a57e5b26-eee7-4556-aa19-5fa3b8307204)
+
+## Listeners
+
+### HTTP Listener
+
+Simply start an HTTP listener accepting connections from any domaon:<br />
+`http --persistent`
+
+Start an HTTP listener accepting connections from your redirector domain:<br />
+`http -d domain-pointing-to-sliver.com --persistent`
+
+### HTTPS Listener
+Using an above HTTPS redector, we can easily start an HTTPS listener which only accepts connections from your redirector domain:<br />
+`https -d domaing-pointing-to-sliver.com --lhost <SLIVER-PRIVATE-IP> --lets-encrypt -p`
+
+It's recommended to create an SSL/TLS certificate using the above `HttpsGenericC2DoneRight.sh` script (or similar technique) and copy it to your folder containing the Sliver client. Start your HTTPS listener pointing to your HTTPS cert:<br />
+`https -d domaing-pointing-to-sliver.com --lhost <SLIVER-PRIVATE-IP> -c cert.pem -k privkey.pem -p`
+
+Note that the private key CANNOT be encrypted, otherwise it will fail. 
 
 ## Beacons
 
