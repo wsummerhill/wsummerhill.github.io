@@ -69,15 +69,15 @@ author:
   bio              : "red teaming | malware dev"
   location         : "Canada"
   links:
-    - label: "Twitter"
+    - label: "Twitter/X"
       icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/bsummerz"
+      url: "https://x.com/bsummerz"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/wsummerhill"
 
 
-# Site Footer - DOESNT LOAD YET
+# Site Footer
 footer:
   links:
     - label: "Twitter/X"
