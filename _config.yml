@@ -32,7 +32,6 @@ logo: logo.png
 twitter_username: bsummerz
 github_username:  wsummerhill
 
-
 # Build settings
 markdown: kramdown
 
@@ -81,15 +80,15 @@ author:
 # Site Footer - DOESNT LOAD YET
 footer:
   links:
-    - label: "Twitter"
+    - label: "Twitter/X"
       icon: "fab fa-twitter"
-      url: "https://twitter.com/bsummerz"
+      url: "https://x.com/bsummerz"
     - label: "GitHub"
       icon: "fab fa-fw fa-github"
       url: "https://github.com/wsummerhill"
 
 # Footer - Copyright
-#copyright: "© 2022 Will Summerhill."
+#copyright: "© 2024 Will Summerhill."
 
 
 defaults:
