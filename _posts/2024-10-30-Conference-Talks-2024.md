@@ -10,11 +10,12 @@ published: false
 In 2024, I had the pleasure to speak at multiple security conferences for the first time in my career. I've always wanted to speak at conferences at some point but I never had the exciting topic
 that was exciting and interesting enough to me which other people might enjoy as well. It took time but eventually I found a topic on malware development and evasion from a technique I've been using 
 for a while now in engagements.<br >
+
 The idea of the technique is to 
 
 ## Conference Talk
 
-The talk I presented at 3 different security events in 2024 was titled "**Simplified Malware Evasion - Entropy and Other Techniques**".
+The talk I presented at 3 different security events in 2024 was titled "**Simplified Malware Evasion - Entropy and Other Techniques**". Each talk was slightly different and updated every time I delivered it given new feedback and lessons learned. The audiences were also very different based on different locations and sizes of conferences.
 
 ## Speaker Events
 
