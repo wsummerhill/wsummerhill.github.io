@@ -23,6 +23,10 @@ The talk I presented at 3 different security events in 2024 was titled "**Simpli
 - [MCTTP, Munich](https://www.mcttp.de/2024-talk-will-summerhill)
 - [SecTor, Toronto](https://www.blackhat.com/sector/2024/briefings/schedule/index.html#simplified-malware-evasion---entropy-and-other-techniques-40874)
 
+## Slides
+
+[SecTor 2024 presentation slides](https://i.blackhat.com/SecTor-2024/Sector-24-Summerhill-SimplifiedMalwareEvasion.pdf)
+
 ## Associated Tools
 
 Below is a list of personally developed tools associated with my conference talk.
