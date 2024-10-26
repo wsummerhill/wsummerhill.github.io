@@ -11,7 +11,7 @@ Interests include:
 - Purple teaming methodology
 - Teaching
 
-## Conference Presentations
+### Conference Presentations
 
 **2024:**
 - [NorthSec, Montreal](https://nsec.io/schedule/#session-2024-simplified-malware-evasion-entropy-and-other-techniques)
